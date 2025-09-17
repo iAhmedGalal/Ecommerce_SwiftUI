@@ -42,7 +42,41 @@ struct HomeView: View {
             .navigationDestination(for: String.self) { page in
                 ItemDetailsView(itemId: Int(page) ?? 0)
             }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        
+                    } label: {
+                        ZStack(alignment: .topLeading) {
+                            Image(AppAssets.cart)
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.black)
+                            
+                            Text("99")
+                                .font(.jfFont(size: 14))
+                                .padding(4)
+                                .foregroundColor(.white)
+                                .background(Color(AppColors.red))
+                                .clipShape(Circle())
+                                .padding(-8)
+                        }
+                    }
+                }
+                                
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        
+                    } label: {
+                        Image(AppAssets.moreGrey)
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .foregroundColor(.black)
+                    }
+                }
+            }
             .navigationTitle("Home Screen")
+            .navigationBarTitleDisplayMode(.inline)
             .onAppear{
                 viewModel.fetchSlider()
                 viewModel.fetchCategories()
