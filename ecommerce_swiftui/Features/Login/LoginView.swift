@@ -25,26 +25,39 @@ struct LoginView: View {
                 IconTextField(
                     title: "Email Or Phone",
                     placeHolder: "Email",
-                    icon: AppAssets.mail
+                    icon: AppAssets.mail,
+                    text: .constant("")
                 )
+                .padding(.bottom, 8)
                 
                 IconTextField(
                     title: "Password",
                     placeHolder: "Passwors",
                     icon: AppAssets.iconLock,
-                    isPssword: true
+                    isPssword: true,
+                    text: .constant("")
                 )
                 
-                CheckBoxView()
+                HStack {
+                    CheckBoxView()
+                        .padding(.vertical, 16)
+                        .padding(.leading, 16)
+                        .padding(.trailing, 8)
+                    
+                    Text("Remember Me?")
+                        .font(.jfFont(size: 18))
+                    
+                    Spacer()
+                }
                 
-                ColoredButton(title: "Login", showArrow: true) {
+                ColoredButton(title: "Login", showArrow: true, isGrediant: true) {
                     
                 }
                 
-                ColoredButton(title: "Creat Account", showArrow: false) {
+                ColoredButton(title: "Creat Account", showArrow: false, bgColor: AppColors.darkGrey) {
                     
                 }
-                
+                .padding(.top, -20)
                 
                 
                 Button {
@@ -68,8 +81,12 @@ struct LoginView: View {
 struct ColoredButton: View {
     @State var title: String
     @State var showArrow: Bool = false
+    @State var isGrediant: Bool = false
+    @State var bgColor: Color = AppColors.darkPrimary
     @State var onTap: (() -> Void)
     
+    private let gradientColors = [Color(AppColors.gradientColor1), Color(AppColors.gradientColor2)]
+
     var body: some View {
         Button {
             onTap()
@@ -80,7 +97,16 @@ struct ColoredButton: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity) // ياخد العرض كله
                     .padding()
-                    .background(Color(AppColors.darkPrimary))
+                    .if(isGrediant) { $0.background(
+                        LinearGradient(
+                            gradient: Gradient(colors: gradientColors),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    ) }
+                    .if(!isGrediant) { $0.background(
+                        Color(bgColor)
+                    ) }
                     .clipShape(RoundedRectangle(cornerRadius: 25))
                     .padding(16)
                 
@@ -100,11 +126,13 @@ struct ColoredButton: View {
 }
 
 struct IconTextField: View {
-    @State var title: String = ""
-    @State var placeHolder: String = ""
-    @State var text: String = ""
-    @State var icon: String = ""
-    @State var isPssword: Bool = false
+    var title: String = ""
+    var placeHolder: String = ""
+    var icon: String = ""
+    var isPssword: Bool = false
+
+    @Binding var text: String
+    @State private var showPassword: Bool = false
 
     var body: some View {
         HStack(spacing: 16) {
@@ -116,32 +144,35 @@ struct IconTextField: View {
             }
             
             VStack(alignment: .leading, spacing: 0) {
-                if (title != "") {
+                if !title.isEmpty {
                     Text(title)
                         .font(.jfFont(size: 18))
                         .foregroundColor(AppColors.greyDark)
                 }
                 
                 if isPssword {
-                    SecureField(placeHolder, text: $text)
-                        .padding(.top, 8)
-                }
-                else {
+                    if showPassword {
+                        TextField(placeHolder, text: $text)
+                            .padding(.top, 8)
+                    } else {
+                        SecureField(placeHolder, text: $text)
+                            .padding(.top, 8)
+                    }
+                } else {
                     TextField(placeHolder, text: $text)
                         .padding(.top, 8)
                 }
             }
             
-            if (isPssword) {
-
+            if isPssword {
                 Button {
-                    
+                    showPassword.toggle()
                 } label: {
-                    Image(systemName: "eye.slash") // eye
+                    Image(systemName: showPassword ? "eye" : "eye.slash")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 30)
-                        .foregroundStyle(.colorGrayDark)
+                        .frame(width: 25, height: 18)
+                        .foregroundStyle(.gray)
                 }
             }
         }
@@ -157,7 +188,7 @@ struct CheckBoxView: View {
     @State private var isChecked: Bool = false
     
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
+        HStack() {
             Button(action: {
                 isChecked.toggle()
             }) {
@@ -169,11 +200,7 @@ struct CheckBoxView: View {
                     .clipShape(Circle())
                     .shadow(color: .gray, radius: 2)
             }
-            
-            Text("Remember Me?")
-                .font(.jfFont(size: 18))
         }
-        .padding()
     }
 }
 
