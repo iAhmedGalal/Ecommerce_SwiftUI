@@ -7,82 +7,117 @@
 
 import SwiftUI
 
-struct RegisterView: View {
+struct RegisterView: View {    
+    @StateObject private var viewModel = RegisterViewModel()
+
     var body: some View {
+
         ZStack {
             Color(AppColors.greyWhite)
                 .ignoresSafeArea()
             
-            VStack {
-                Image(AppAssets.nameApp)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
-                    .padding()
-                
-                IconTextField(
-                    title: "Name",
-                    placeHolder: "Name",
-                    icon: AppAssets.user,
-                    text: .constant("")
-                )
-                .padding(.bottom, 8)
-                
-                IconTextField(
-                    title: "Email",
-                    placeHolder: "Email",
-                    icon: AppAssets.mail,
-                    text: .constant("")
-                )
-                .padding(.bottom, 8)
-                
-                IconTextField(
-                    title: "Phone",
-                    placeHolder: "Phone",
-                    icon: AppAssets.phone,
-                    text: .constant("")
-                )
-                .padding(.bottom, 8)
-                
-                IconTextField(
-                    title: "Password",
-                    placeHolder: "Passwors",
-                    icon: AppAssets.iconLock,
-                    isPssword: true,
-                    text: .constant("")
-                )
-                .padding(.bottom, 8)
-                
-                IconTextField(
-                    title: "Confirm Password",
-                    placeHolder: "Passwors",
-                    icon: AppAssets.iconLock,
-                    isPssword: true,
-                    text: .constant("")
-                )
-                
-                HStack(spacing: 4) {
-                    CheckBoxView()
-                        .padding(.vertical, 16)
-                        .padding(.leading, 16)
-                        .padding(.trailing, 8)
+            ScrollView {
+                VStack {
+                    Image(AppAssets.nameApp)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 170)
+                        .padding()
                     
-                    Text("Accept All")
-                        .font(.jfFont(size: 18))
+                    IconTextField(
+                        title: "Name",
+                        placeHolder: "Name",
+                        icon: AppAssets.user,
+                        keyboardType: .namePhonePad,
+                        text: .constant(""),
+                        focusedField: viewModel.$focusedField
+                    )
+                    .padding(.bottom, 8)
                     
-                    Button {
+                    IconTextField(
+                        title: "Email",
+                        placeHolder: "Email",
+                        icon: AppAssets.mail,
+                        keyboardType: .emailAddress,
+                        text: .constant(""),
+                        focusedField: $viewModel.focusedField
+                    )
+                    .padding(.bottom, 8)
+                    
+                    IconTextField(
+                        title: "Phone",
+                        placeHolder: "Phone",
+                        icon: AppAssets.phone,
+                        keyboardType: .asciiCapableNumberPad,
+                        text: .constant(""),
+                        focusedField: $viewModel.focusedField
+                    )
+                    .padding(.bottom, 8)
+                    
+
+                    ZStack(alignment: .trailing) {
+                        IconTextField(
+                            title: "Address",
+                            placeHolder: "Address",
+                            icon: AppAssets.map,
+                            text: .constant(""),
+                            focusedField: viewModel.focusedField
+                        )
                         
-                    } label: {
-                        Text("Terms and Conditions")
+                        Button {
+                            
+                        } label: {
+                            Image(AppAssets.markerDown)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 25)
+                                .padding(.horizontal, 28)
+                        }
+                    }
+                    .padding(.bottom, 8)
+                    
+                    IconTextField(
+                        title: "Password",
+                        placeHolder: "Passwors",
+                        icon: AppAssets.iconLock,
+                        isPssword: true,
+                        text: .constant(""),
+                        focusedField: viewModel.focusedField
+                    )
+                    .padding(.bottom, 8)
+                    
+                    IconTextField(
+                        title: "Confirm Password",
+                        placeHolder: "Passwors",
+                        icon: AppAssets.iconLock,
+                        isPssword: true,
+                        text: .constant(""),
+                        focusedField: viewModel.focusedField
+                    )
+                    
+                    HStack(spacing: 4) {
+                        CheckBoxView()
+                            .padding(.vertical, 16)
+                            .padding(.leading, 16)
+                            .padding(.trailing, 4)
+                        
+                        Text("Accept All")
                             .font(.jfFont(size: 18))
-                            .underline()
+                        
+                        Button {
+                            
+                        } label: {
+                            Text("Terms and Conditions")
+                                .font(.jfFont(size: 18))
+                                .underline()
+                        }
+                        
+                        Spacer()
                     }
                     
-                    Spacer()
-                }
-                
-                ColoredButton(title: "Creat Account", showArrow: false, isGrediant: true) {
-                    
+                    ColoredButton(title: "Creat Account", showArrow: false, isGrediant: true) {
+                        
+                    }
                 }
             }
         }

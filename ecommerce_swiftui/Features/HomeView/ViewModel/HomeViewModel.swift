@@ -16,7 +16,6 @@ class HomeViewModel: ObservableObject {
     @Published var bestSellerList: [ItemsModel] = []
     @Published var newItemsList: [ItemsModel] = []
 
-//    @Published var newUser: UserResponse?
     @Published var errorMessage: String?
     @Published var isLoading = false
     

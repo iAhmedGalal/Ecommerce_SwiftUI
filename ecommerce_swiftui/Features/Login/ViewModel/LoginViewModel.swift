@@ -17,8 +17,29 @@ class LoginViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isLoading = false
     @Published var isSuccess: Bool = false
+    @Published var rememberMe: Bool = false
+    
+    @Published var toast: Toast?
 
     private var cancellables = Set<AnyCancellable>()
+    
+    let userMailKey = "userMailKey"
+    let userPasswordKey = "userPasswordKey"
+    
+    func storeUserCredentials() {
+        UserDefaults.standard.set(mailTF, forKey: userMailKey)
+        UserDefaults.standard.set(passwordTF, forKey: userPasswordKey)
+    }
+    
+    func removeUserCredentials() {
+        UserDefaults.standard.removeObject(forKey: userMailKey)
+        UserDefaults.standard.removeObject(forKey: userPasswordKey)
+    }
+    
+    func getUserCredentials() {
+        mailTF = UserDefaults.standard.string(forKey: userMailKey) ?? ""
+        passwordTF = UserDefaults.standard.string(forKey: userPasswordKey) ?? ""
+    }
     
     func login() {
         guard !mailTF.isEmpty, !passwordTF.isEmpty else {
@@ -40,6 +61,8 @@ class LoginViewModel: ObservableObject {
         
         print("params", params)
         
+        rememberMe ? storeUserCredentials() : removeUserCredentials()
+        
         let request = APIRequest(path: Urls.login, method: .POST, parameters: params, requiresAuth: false)
 
         NetworkManager.shared.request(request, responseType: UserModel.self)
@@ -54,15 +77,18 @@ class LoginViewModel: ObservableObject {
             } receiveValue: { [weak self] user in
                 guard let self = self else { return }
 
-                if user.status == false {
-                    self.errorMessage = user.error?.first ?? ""
-                    return
+                if user.status == true {
+                    self.userData = user
+                    
+                    SessionManager.shared.saveUser(user)
                 }
                 
-                self.userData = user
                 self.isSuccess = true
                 
-                SessionManager.shared.saveUser(user)
+                toast = Toast(
+                    style: user.status == false ? .error : .success,
+                    message: user.msg ?? ""
+                )
             }
             .store(in: &cancellables)
     }
