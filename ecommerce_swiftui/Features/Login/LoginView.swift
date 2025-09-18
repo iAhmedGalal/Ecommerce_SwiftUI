@@ -100,8 +100,8 @@ struct ColoredButton: View {
                     .if(isGrediant) { $0.background(
                         LinearGradient(
                             gradient: Gradient(colors: gradientColors),
-                            startPoint: .leading,
-                            endPoint: .trailing
+                            startPoint: .top,
+                            endPoint: .bottom
                         )
                     ) }
                     .if(!isGrediant) { $0.background(
