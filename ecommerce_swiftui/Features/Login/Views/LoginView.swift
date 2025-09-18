@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
- 
+    @StateObject private var viewModel = LoginViewModel()
     
     var body: some View {
         ZStack {
@@ -25,27 +25,33 @@ struct LoginView: View {
                 IconTextField(
                     title: "Email Or Phone",
                     placeHolder: "Email",
-                    icon: AppAssets.mail
+                    icon: AppAssets.mail,
+                    text: $viewModel.mailTF
                 )
+                .padding(.bottom, 8)
                 
                 IconTextField(
                     title: "Password",
                     placeHolder: "Passwors",
                     icon: AppAssets.iconLock,
-                    isPssword: true
+                    isPssword: true,
+                    text: $viewModel.passwordTF
                 )
                 
-                CheckBoxView()
+                HStack {
+                    CheckBoxView()
+                
+                    Spacer()
+                }
                 
                 ColoredButton(title: "Login", showArrow: true) {
-                    
+                    viewModel.login()
                 }
                 
                 ColoredButton(title: "Creat Account", showArrow: false) {
                     
                 }
-                
-                
+                .padding(.top, -20)
                 
                 Button {
                     
@@ -59,16 +65,29 @@ struct LoginView: View {
                             .foregroundStyle(.colorRedFav)
                     }
                 }
+                
+                
 
+            }
+            
+            if viewModel.isLoading {
+                Color.black.opacity(0.3).ignoresSafeArea()
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .tint(.white)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.black.opacity(0.7))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
     }
 }
 
 struct ColoredButton: View {
-    @State var title: String
-    @State var showArrow: Bool = false
-    @State var onTap: (() -> Void)
+    var title: String
+    var showArrow: Bool = false
+    var onTap: (() -> Void)
     
     var body: some View {
         Button {
@@ -100,12 +119,15 @@ struct ColoredButton: View {
 }
 
 struct IconTextField: View {
-    @State var title: String = ""
-    @State var placeHolder: String = ""
-    @State var text: String = ""
-    @State var icon: String = ""
-    @State var isPssword: Bool = false
+    var title: String = ""
+    var placeHolder: String = ""
+    var icon: String = ""
+    var isPssword: Bool = false
 
+    @Binding var text: String
+
+    @State private var showPassword: Bool = false
+    
     var body: some View {
         HStack(spacing: 16) {
             if (icon != "") {
@@ -123,21 +145,25 @@ struct IconTextField: View {
                 }
                 
                 if isPssword {
-                    SecureField(placeHolder, text: $text)
-                        .padding(.top, 8)
-                }
-                else {
+                    if showPassword {
+                        TextField(placeHolder, text: $text)
+                            .padding(.top, 8)
+                    } else {
+                        SecureField(placeHolder, text: $text)
+                            .padding(.top, 8)
+                    }
+                } else {
                     TextField(placeHolder, text: $text)
                         .padding(.top, 8)
                 }
             }
             
             if (isPssword) {
-
                 Button {
+                    showPassword.toggle()
                     
                 } label: {
-                    Image(systemName: "eye.slash") // eye
+                    Image(systemName: showPassword ? "eye" : "eye.slash")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 30)
@@ -157,7 +183,7 @@ struct CheckBoxView: View {
     @State private var isChecked: Bool = false
     
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
+        HStack {
             Button(action: {
                 isChecked.toggle()
             }) {

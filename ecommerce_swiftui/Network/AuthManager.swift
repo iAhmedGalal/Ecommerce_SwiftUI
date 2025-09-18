@@ -10,6 +10,6 @@ class AuthManager {
     private init() {}
     
     var token: String {
-        return "YOUR_ACCESS_TOKEN"
+        return SessionManager.shared.currentUser?.token ?? ""
     }
 }
