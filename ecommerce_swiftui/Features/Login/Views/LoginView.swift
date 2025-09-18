@@ -40,15 +40,21 @@ struct LoginView: View {
                 
                 HStack {
                     CheckBoxView()
-                
+                        .padding(.vertical, 16)
+                        .padding(.leading, 16)
+                        .padding(.trailing, 8)
+                    
+                    Text("Remember Me?")
+                        .font(.jfFont(size: 18))
+
                     Spacer()
                 }
                 
-                ColoredButton(title: "Login", showArrow: true) {
+                ColoredButton(title: "Login", showArrow: true, isGrediant: true) {
                     viewModel.login()
                 }
                 
-                ColoredButton(title: "Creat Account", showArrow: false) {
+                ColoredButton(title: "Creat Account", showArrow: false, bgColor: AppColors.darkGrey) {
                     
                 }
                 .padding(.top, -20)
@@ -65,9 +71,6 @@ struct LoginView: View {
                             .foregroundStyle(.colorRedFav)
                     }
                 }
-                
-                
-
             }
             
             if viewModel.isLoading {
@@ -88,7 +91,11 @@ struct ColoredButton: View {
     var title: String
     var showArrow: Bool = false
     var onTap: (() -> Void)
-    
+    var isGrediant: Bool = false
+    var bgColor: Color = AppColors.darkPrimary
+
+    private let gradientColors = [Color(AppColors.gradientColor1), Color(AppColors.gradientColor2)]
+
     var body: some View {
         Button {
             onTap()
@@ -99,7 +106,16 @@ struct ColoredButton: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity) // ياخد العرض كله
                     .padding()
-                    .background(Color(AppColors.darkPrimary))
+                    .if(isGrediant) { $0.background(
+                        LinearGradient(
+                            gradient: Gradient(colors: gradientColors),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    ) }
+                    .if(!isGrediant) { $0.background(
+                        Color(bgColor)
+                    ) }
                     .clipShape(RoundedRectangle(cornerRadius: 25))
                     .padding(16)
                 
@@ -125,7 +141,6 @@ struct IconTextField: View {
     var isPssword: Bool = false
 
     @Binding var text: String
-
     @State private var showPassword: Bool = false
     
     var body: some View {
@@ -138,7 +153,7 @@ struct IconTextField: View {
             }
             
             VStack(alignment: .leading, spacing: 0) {
-                if (title != "") {
+                if !title.isEmpty {
                     Text(title)
                         .font(.jfFont(size: 18))
                         .foregroundColor(AppColors.greyDark)
@@ -166,8 +181,8 @@ struct IconTextField: View {
                     Image(systemName: showPassword ? "eye" : "eye.slash")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 30)
-                        .foregroundStyle(.colorGrayDark)
+                        .frame(width: 25, height: 18)
+                        .foregroundStyle(.gray)
                 }
             }
         }
@@ -195,11 +210,7 @@ struct CheckBoxView: View {
                     .clipShape(Circle())
                     .shadow(color: .gray, radius: 2)
             }
-            
-            Text("Remember Me?")
-                .font(.jfFont(size: 18))
         }
-        .padding()
     }
 }
 
