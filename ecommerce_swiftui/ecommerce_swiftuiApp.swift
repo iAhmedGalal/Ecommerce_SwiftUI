@@ -11,7 +11,7 @@ import SwiftUI
 struct ecommerce_swiftuiApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            RegisterView()
         }
     }
 }

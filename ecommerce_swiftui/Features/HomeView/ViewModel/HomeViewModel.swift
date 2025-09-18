@@ -16,7 +16,6 @@ class HomeViewModel: ObservableObject {
     @Published var bestSellerList: [ItemsModel] = []
     @Published var newItemsList: [ItemsModel] = []
 
-//    @Published var newUser: UserResponse?
     @Published var errorMessage: String?
     @Published var isLoading = false
     
@@ -124,22 +123,4 @@ class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-    
-//    func createUser(name: String, email: String) {
-//        isLoading = true
-//        let params = ["name": name, "email": email]
-//        let request = APIRequest(path: "/users", method: .POST, parameters: params, requiresAuth: true)
-//        
-//        NetworkManager.shared.request(request, responseType: UserResponse.self)
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] completion in
-//                self?.isLoading = false
-//                if case let .failure(error) = completion {
-//                    self?.errorMessage = error.errorDescription
-//                }
-//            } receiveValue: { [weak self] user in
-//                self?.newUser = user
-//            }
-//            .store(in: &cancellables)
-//    }
 }
