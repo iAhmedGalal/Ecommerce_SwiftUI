@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RegisterView: View {    
     @StateObject private var viewModel = RegisterViewModel()
-
+    @FocusState private var focusedField: String?
     var body: some View {
 
         ZStack {
@@ -29,8 +29,8 @@ struct RegisterView: View {
                         placeHolder: "Name",
                         icon: AppAssets.user,
                         keyboardType: .namePhonePad,
-                        text: .constant(""),
-                        focusedField: viewModel.$focusedField
+                        text: $viewModel.nameTF,
+                        focusedField: _focusedField
                     )
                     .padding(.bottom, 8)
                     
@@ -39,8 +39,8 @@ struct RegisterView: View {
                         placeHolder: "Email",
                         icon: AppAssets.mail,
                         keyboardType: .emailAddress,
-                        text: .constant(""),
-                        focusedField: $viewModel.focusedField
+                        text: $viewModel.mailTF,
+                        focusedField: _focusedField
                     )
                     .padding(.bottom, 8)
                     
@@ -49,8 +49,8 @@ struct RegisterView: View {
                         placeHolder: "Phone",
                         icon: AppAssets.phone,
                         keyboardType: .asciiCapableNumberPad,
-                        text: .constant(""),
-                        focusedField: $viewModel.focusedField
+                        text: $viewModel.phoneTF,
+                        focusedField: _focusedField
                     )
                     .padding(.bottom, 8)
                     
@@ -60,8 +60,8 @@ struct RegisterView: View {
                             title: "Address",
                             placeHolder: "Address",
                             icon: AppAssets.map,
-                            text: .constant(""),
-                            focusedField: viewModel.focusedField
+                            text: $viewModel.addressTF,
+                            focusedField: _focusedField
                         )
                         
                         Button {
@@ -81,8 +81,8 @@ struct RegisterView: View {
                         placeHolder: "Passwors",
                         icon: AppAssets.iconLock,
                         isPssword: true,
-                        text: .constant(""),
-                        focusedField: viewModel.focusedField
+                        text: $viewModel.passwordTF,
+                        focusedField: _focusedField
                     )
                     .padding(.bottom, 8)
                     
@@ -91,12 +91,12 @@ struct RegisterView: View {
                         placeHolder: "Passwors",
                         icon: AppAssets.iconLock,
                         isPssword: true,
-                        text: .constant(""),
-                        focusedField: viewModel.focusedField
+                        text: $viewModel.confirmPasswordTF,
+                        focusedField: _focusedField
                     )
                     
                     HStack(spacing: 4) {
-                        CheckBoxView()
+                        CheckBoxView(isChecked: $viewModel.acceptTerms)
                             .padding(.vertical, 16)
                             .padding(.leading, 16)
                             .padding(.trailing, 4)

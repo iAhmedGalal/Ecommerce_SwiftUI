@@ -19,36 +19,49 @@ struct SplashView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .top) {
-            Image(AppAssets.splashBackground)
-                .resizable()
-                .ignoresSafeArea()
-            
-            VStack {
-                Image(AppAssets.nameAppWhite)
+        NavigationStack {
+            ZStack(alignment: .top) {
+                Image(AppAssets.splashBackground)
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 256)
-                    .padding(.vertical, 48)
-                    .scaleEffect(scale)
-                    .opacity(opacity)
-                    .onAppear {
-                        withAnimation(.easeIn(duration: 1.5)) {
-                            self.scale = 1.0
-                            self.opacity = 1.0
+                    .ignoresSafeArea()
+                
+                VStack {
+                    Image(AppAssets.nameAppWhite)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 256)
+                        .padding(.vertical, 48)
+                        .scaleEffect(scale)
+                        .opacity(opacity)
+                        .onAppear {
+                            withAnimation(.easeIn(duration: 1.5)) {
+                                self.scale = 1.0
+                                self.opacity = 1.0
+                            }
                         }
+                    
+                    Spacer()
+                    
+                    Text("Copyright © \(currentYear) All Rights Reserved")
+                        .font(.jfFont(size: 18))
+                        .foregroundColor(.white)
+                }
+                .animation(.easeInOut(duration: 0.8), value: isActive)
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.isActive = true
                     }
-                
-                Spacer()
-                
-                Text("Copyright © \(currentYear) All Rights Reserved")
-                    .font(.jfFont(size: 18))
-                    .foregroundColor(.white)
+                }
             }
-            .animation(.easeInOut(duration: 0.8), value: isActive)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    self.isActive = true
+            .navigationDestination(isPresented: $isActive) {
+                let token = SessionManager.shared.currentUser?.token ?? ""
+                
+                if token.isEmpty {
+                    LoginView()
+                        .navigationBarBackButtonHidden(true)
+                } else {
+                    HomeNavView()
+                        .navigationBarBackButtonHidden(true)
                 }
             }
         }

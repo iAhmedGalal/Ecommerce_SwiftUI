@@ -9,8 +9,6 @@ import SwiftUI
 import Combine
 
 class RegisterViewModel: ObservableObject {
-//    @FocusState var focusedField: String = ""  // بنحتفظ بالـ Focus هنا
-
     @Published var userData: UserModel = UserModel()
     
     @Published var nameTF: String = ""
@@ -51,7 +49,7 @@ class RegisterViewModel: ObservableObject {
         }
         
         guard Helper.isValidEmail(mail_address: mailTF) == false else {
-            let message = "ادخل بريد إلكتروني صحيح"
+            errorMessage = "ادخل بريد إلكتروني صحيح"
             return
         }
         
@@ -61,7 +59,7 @@ class RegisterViewModel: ObservableObject {
         }
  
         guard Helper.isValidPhone(phone: phoneTF) == false else {
-            let message = "ادخل رقم جوال صحيح"
+            errorMessage = "ادخل رقم جوال صحيح"
             return
         }
         

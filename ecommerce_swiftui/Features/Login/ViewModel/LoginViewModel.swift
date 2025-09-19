@@ -9,6 +9,8 @@ import SwiftUI
 import Combine
 
 class LoginViewModel: ObservableObject {
+    @Published var path = NavigationPath()
+
     @Published var userData: UserModel = UserModel()
     
     @Published var mailTF: String = ""
@@ -39,6 +41,10 @@ class LoginViewModel: ObservableObject {
     func getUserCredentials() {
         mailTF = UserDefaults.standard.string(forKey: userMailKey) ?? ""
         passwordTF = UserDefaults.standard.string(forKey: userPasswordKey) ?? ""
+        
+        if !mailTF.isEmpty && !passwordTF.isEmpty {
+            rememberMe = true
+        }
     }
     
     func login() {
@@ -81,6 +87,7 @@ class LoginViewModel: ObservableObject {
                     self.userData = user
                     
                     SessionManager.shared.saveUser(user)
+                    path.append("home")
                 }
                 
                 self.isSuccess = true

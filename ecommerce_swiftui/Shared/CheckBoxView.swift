@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CheckBoxView: View {
-    @State private var isChecked: Bool = false
+    @Binding var isChecked: Bool
     
     var body: some View {
         HStack {
