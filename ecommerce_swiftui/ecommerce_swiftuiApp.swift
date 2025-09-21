@@ -9,10 +9,14 @@ import SwiftUI
 
 @main
 struct ecommerce_swiftuiApp: App {
+    @StateObject private var languageManager = LanguageManager()
+
     var body: some Scene {
         WindowGroup {
             SplashView()
                 .router()
+                .environment(\.locale, languageManager.currentLocale)
+                .environmentObject(languageManager)
         }
     }
 }

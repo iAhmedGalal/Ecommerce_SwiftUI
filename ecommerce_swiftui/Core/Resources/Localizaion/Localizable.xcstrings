@@ -1,0 +1,103 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "%" : {
+
+    },
+    "99" : {
+
+    },
+    "Accept All" : {
+
+    },
+    "Add Notes" : {
+
+    },
+    "Add to Cart" : {
+
+    },
+    "Copyright © %@ All Rights Reserved" : {
+
+    },
+    "createAccount" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إنشاء حساب"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create Account"
+          }
+        }
+      }
+    },
+    "Forget Password" : {
+
+    },
+    "Go to Cart" : {
+
+    },
+    "Home Screen" : {
+
+    },
+    "L.B" : {
+
+    },
+    "login" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تسجيل الدخول"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login"
+          }
+        }
+      }
+    },
+    "Max Quantity: 10" : {
+
+    },
+    "Menu View" : {
+
+    },
+    "More >>" : {
+
+    },
+    "Notifications View" : {
+
+    },
+    "Orders View" : {
+
+    },
+    "Quantity" : {
+
+    },
+    "Remember Me?" : {
+
+    },
+    "Terms and Conditions" : {
+
+    },
+    "Units Dropdown" : {
+
+    },
+    "موقعي" : {
+
+    }
+  },
+  "version" : "1.0"
+}

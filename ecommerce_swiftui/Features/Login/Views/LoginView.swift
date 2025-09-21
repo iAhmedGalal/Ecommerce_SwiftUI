@@ -10,6 +10,7 @@ import SwiftUI
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
     @Environment(Router.self) var router
+    @EnvironmentObject var languageManager: LanguageManager
 
     var body: some View {
         ZStack {
@@ -17,7 +18,7 @@ struct LoginView: View {
                 .ignoresSafeArea()
             
             VStack {
-                Text("Login")
+                Text("login".tr)
                     .font(.jfFontBold(size: 22))
                 
                 Image(AppAssets.nameApp)
@@ -59,16 +60,19 @@ struct LoginView: View {
                 }
                 else {
                     ColoredButton(
-                        title: "Login",
+                        title: "login".tr,
                         showArrow: true,
                         isGrediant: true
                     ) {
-                        viewModel.login()
+
+//                        viewModel.login()
+                        
+                        languageManager.changeLanguage(to: "ar")
                     }
                 }
                 
                 ColoredButton(
-                    title: "Creat Account",
+                    title: "createAccount".tr,
                     showArrow: false,
                     bgColor: AppColors.darkGrey
                 ) {

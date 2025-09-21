@@ -53,7 +53,7 @@ struct SplashView: View {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     let token = SessionManager.shared.currentUser?.token ?? ""
-                    !token.isEmpty ? route.push(.login) : route.push(.main)
+                    token.isEmpty ? route.push(.login) : route.push(.main)
                 }
             }
         }
