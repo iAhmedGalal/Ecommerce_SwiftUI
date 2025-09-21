@@ -8,18 +8,20 @@
 import SwiftUI
 
 struct DiscountsView: View {
+    @State var path = NavigationPath()
     var discountsList: [ItemsModel]
     
     var body: some View {
-        NavigationStack {
-            HomeDividerView(title: "Discounts", showMore: true)
+        HomeDividerView(title: "Discounts", showMore: true, route: .dicounts)
 
-            ScrollView(.horizontal) {
-                HStack{
-                    ForEach(discountsList) { item in
-                        ItemsView(item: item)
-                            .padding(4)
-                    }
+        ScrollView(.horizontal) {
+            HStack{
+                ForEach(discountsList) { item in
+                    ItemsView(item: item)
+                        .padding(4)
+                        .onTapGesture {
+                            path.append("details")
+                        }
                 }
             }
         }

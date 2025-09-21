@@ -11,7 +11,6 @@ struct ItemDetailsView: View {
     @State var itemId: Int
     
     @StateObject private var viewModel = ItemDetailsViewModel()
-    @EnvironmentObject var nav: NavigationManager
 
 //    @State private var itemI: String = ""
 //    @State private var unitPrice: Double = 0.0
@@ -34,6 +33,7 @@ struct ItemDetailsView: View {
                 } placeholder: {
                     ProgressView()
                 }
+                .scaledToFit()
                 .frame(height: 150)
                 .cornerRadius(10)
                 
@@ -110,7 +110,6 @@ struct ItemDetailsView: View {
             .cornerRadius(20)
             .padding()
         }
-        .navigationTitle("Item Details")
         .onAppear {
             viewModel.getItemDetails(id: itemId)
         }

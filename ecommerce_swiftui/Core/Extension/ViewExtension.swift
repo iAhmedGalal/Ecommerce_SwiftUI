@@ -41,6 +41,10 @@ extension View {
     func keyboardAdaptive() -> some View {
         self.modifier(KeyboardAdaptive())
     }
+    
+    func router() -> some View {
+        modifier(RouterViewModifier())
+    }
 }
 
 

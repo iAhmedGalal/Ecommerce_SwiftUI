@@ -9,8 +9,6 @@ import SwiftUI
 import Combine
 
 class LoginViewModel: ObservableObject {
-    @Published var path = NavigationPath()
-
     @Published var userData: UserModel = UserModel()
     
     @Published var mailTF: String = ""
@@ -20,6 +18,8 @@ class LoginViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isSuccess: Bool = false
     @Published var rememberMe: Bool = false
+    
+    var navigateToHome = false
     
     @Published var toast: Toast?
 
@@ -87,7 +87,8 @@ class LoginViewModel: ObservableObject {
                     self.userData = user
                     
                     SessionManager.shared.saveUser(user)
-                    path.append("home")
+                    
+                    navigateToHome = true
                 }
                 
                 self.isSuccess = true

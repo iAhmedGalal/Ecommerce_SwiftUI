@@ -12,6 +12,7 @@ struct ecommerce_swiftuiApp: App {
     var body: some Scene {
         WindowGroup {
             SplashView()
+                .router()
         }
     }
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import MapKit
 
 class RegisterViewModel: ObservableObject {
     @Published var userData: UserModel = UserModel()
@@ -18,8 +19,6 @@ class RegisterViewModel: ObservableObject {
     @Published var passwordTF: String = ""
     @Published var confirmPasswordTF: String = ""
     
-    @Published var lat: String = ""
-    @Published var lon: String = ""
     @Published var userType: Int = 0
     @Published var cityId: Int = 0
     
@@ -29,47 +28,82 @@ class RegisterViewModel: ObservableObject {
     @Published var acceptTerms: Bool = false
     
     @Published var toast: Toast?
+    
+    @Published var showMap = false
+    @Published var selectedCoordinate: CLLocationCoordinate2D?
+    
+    var navigateToLogin = false
 
     private var cancellables = Set<AnyCancellable>()
     
+    func showErrorToast() {
+        toast = Toast(
+            style: .error,
+            message: errorMessage ?? ""
+        )
+    }
+    
     func register() {
-        guard !acceptTerms else {
+        guard acceptTerms else {
             errorMessage = "يجب الموافقة على الشروط والأحكام"
+            showErrorToast()
             return
         }
         
         guard !nameTF.isEmpty else {
             errorMessage =  "ادخل اسم المستخدم"
+            showErrorToast()
             return
         }
         
         guard !mailTF.isEmpty else {
             errorMessage = "ادخل البريد الإلكتروني"
+            showErrorToast()
             return
         }
         
-        guard Helper.isValidEmail(mail_address: mailTF) == false else {
+        guard Helper.isValidEmail(mail_address: mailTF) else {
             errorMessage = "ادخل بريد إلكتروني صحيح"
+            showErrorToast()
             return
         }
         
         guard !phoneTF.isEmpty else {
             errorMessage = "ادخل رقم الجوال"
+            showErrorToast()
             return
         }
  
-        guard Helper.isValidPhone(phone: phoneTF) == false else {
+        guard Helper.isValidPhone(phone: phoneTF) else {
             errorMessage = "ادخل رقم جوال صحيح"
+            showErrorToast()
             return
         }
         
-        guard passwordTF.isEmpty == true else {
+        let lat = selectedCoordinate?.latitude ?? 0.0
+        let lon = selectedCoordinate?.longitude ?? 0.0
+        
+        guard lat != 0.0 || lon != 0.0 else {
+            errorMessage = "اختر العنوان من الخريطة"
+            showErrorToast()
+            return
+        }
+        
+        guard !addressTF.isEmpty else {
+            errorMessage = "اختر العنوان من الخريطة"
+            showErrorToast()
+            return
+        }
+        
+        guard !passwordTF.isEmpty == true else {
             errorMessage = "ادخل كلمة المرور"
+            showErrorToast()
             return
         }
         
-        guard passwordTF != confirmPasswordTF else {
+        guard passwordTF == confirmPasswordTF else {
             errorMessage = "كلمة المرور غير متطابقة"
+            showErrorToast()
             return
         }
         
@@ -89,8 +123,8 @@ class RegisterViewModel: ObservableObject {
             "address": addressTF,
             "city_id": cityId,
             "shop_name": "",
-            "lat": lat,
-            "lon": lon,
+            "lat": selectedCoordinate?.latitude ?? 0.0,
+            "lon": selectedCoordinate?.longitude ?? 0.0,
             "shop_id": SHOP_ID
         ] as [String : Any]
         
@@ -109,17 +143,26 @@ class RegisterViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] user in
                 guard let self = self else { return }
-
-                if user.status == true {
-                    self.userData = user
-                    
-                    SessionManager.shared.saveUser(user)
-                }
                 
                 self.isSuccess = true
-                
+
+                if (user.status == false) {
+                    toast = Toast(
+                        style: .error,
+                        message: user.error?.first ?? ""
+                    )
+                    
+                    return
+                }
+
+                self.userData = user
+                   
+                SessionManager.shared.saveUser(user)
+                    
+                navigateToLogin = true
+                                
                 toast = Toast(
-                    style: user.status == false ? .error : .success,
+                    style: .success,
                     message: user.msg ?? ""
                 )
             }

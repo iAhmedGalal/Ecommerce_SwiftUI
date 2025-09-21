@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ItemsView: View {
-    @EnvironmentObject var nav: NavigationManager
+    @Environment(Router.self) var router
 
     var item: ItemsModel
 
@@ -22,7 +22,7 @@ struct ItemsView: View {
 
                 HStack(alignment: .top) {
                     Button {
-                        nav.goToUserDetails(item.id ?? 0)
+
                     } label: {
                         Image(AppAssets.favorite)
                             .resizable()
@@ -68,7 +68,7 @@ struct ItemsView: View {
                 Spacer()
                 
                 Button {
-                    nav.goToUserDetails(item.id ?? 0)
+                    
                 }
                 label: {
                   Image(AppAssets.cart3)
@@ -84,5 +84,8 @@ struct ItemsView: View {
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(radius: 3)
+        .onTapGesture {
+            router.push(.itemDetailds(item.id ?? 0))
+        }
     }
 }

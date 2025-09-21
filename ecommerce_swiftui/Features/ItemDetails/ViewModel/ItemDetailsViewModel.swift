@@ -17,7 +17,10 @@ class ItemDetailsViewModel: ObservableObject {
     
     func getItemDetails(id: Int) {
         isLoading = true
-        let request = APIRequest(path: String(format: Urls.itemDetails, id, "hhgg"), method: .GET, parameters: nil, requiresAuth: false)
+        
+        let url = String(format: Urls.itemDetails, "\(id)")
+        
+        let request = APIRequest(path: url, method: .GET, parameters: nil, requiresAuth: true)
                 
         NetworkManager.shared.request(request, responseType: APIResponse<ItemsModel>.self, retries: 2)
             .receive(on: DispatchQueue.main)
@@ -28,7 +31,7 @@ class ItemDetailsViewModel: ObservableObject {
                 }
                 
             } receiveValue: { [weak self] response in
-                self?.item = response.data ?? ItemsModel()
+                self?.item = response.item ?? ItemsModel()
             }
             .store(in: &cancellables)
     }

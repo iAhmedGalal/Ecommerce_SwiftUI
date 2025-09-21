@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct HomeDividerView: View {
+    @Environment(Router.self) var router
+
     var title: String
     var showMore: Bool
+    var route: AppRoutes?
 
     var body: some View {
         ZStack(alignment: .trailing) {
             if (showMore) {
                 Button {
-                    
+                    router.push(route!)
                 } label: {
                     Text("More >>")
                         .font(.jfFont(size: 18))

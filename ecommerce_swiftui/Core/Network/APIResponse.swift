@@ -12,11 +12,12 @@ struct APIResponse<T: Decodable>: Decodable {
     var maintenance_message : String?
     var data: T?
     var items: T?
+    var item: T?
     
     enum CodingKeys: String, CodingKey {
         case status = "status", message = "message"
         case maintenance = "maintenance", maintenance_message = "maintenance_message"
-        case data = "data", items = "items"
+        case data = "data", items = "items", item = "item"
     }
 }
 

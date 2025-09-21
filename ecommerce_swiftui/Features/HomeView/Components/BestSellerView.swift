@@ -11,7 +11,7 @@ struct BestSellerView: View {
     var bestSellerList: [ItemsModel]
     
     var body: some View {
-        HomeDividerView(title: "Best Seller", showMore: true)
+        HomeDividerView(title: "Best Seller", showMore: true, route: .bestSeller)
         
         ScrollView(.horizontal) {
             HStack{

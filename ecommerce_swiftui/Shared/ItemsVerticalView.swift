@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ItemsVerticalView: View {
+    @Environment(Router.self) var router
+
     var item: ItemsModel
 
     var body: some View {
@@ -83,5 +85,8 @@ struct ItemsVerticalView: View {
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(radius: 3)
+        .onTapGesture {
+            router.push(.itemDetailds(item.id ?? 0))
+        }
     }
 }

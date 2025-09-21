@@ -66,6 +66,7 @@ struct UserModel: Codable {
         self.verifiedManager = (try? container.decode(Int.self, forKey: .verifiedManager)) ?? 0
         self.cityId = (try? container.decode(Int.self, forKey: .cityId)) ?? 0
         self.maintenance = (try? container.decode(Int.self, forKey: .maintenance)) ?? 0
+        self.error = (try? container.decode([String].self, forKey: .error)) ?? []
 
 //        self.price = (try? container.decode(String.self, forKey: .price))
 //            ?? String((try? container.decode(Int.self, forKey: .price)) ?? 0)
@@ -92,5 +93,6 @@ struct UserModel: Codable {
         try container.encode(cityId ,forKey: .cityId)
         try container.encode(maintenance ,forKey: .maintenance)
         try container.encode(maintenanceMessage ,forKey: .maintenanceMessage)
+        try container.encode(error ,forKey: .error)
     }
 }
