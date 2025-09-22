@@ -27,7 +27,7 @@ struct LocationDialogView: View {
                 MapReader { proxy in
                     Map(position: .constant(.region(region))) {
                         if let userCoord = userCoordinate {
-                            Marker("موقعي", coordinate: userCoord)
+                            Marker("myLocation".tr(), coordinate: userCoord)
                                 .tint(.blue)
                         }
                         
@@ -54,11 +54,9 @@ struct LocationDialogView: View {
                                     }
                                 }
                             }
-                        
-                        
                     )
                 }
-                .frame(height: 275)
+                .frame(height: 375)
                 .cornerRadius(12, corners: [.topLeft, .topRight])
                 
                 Button {
@@ -78,13 +76,13 @@ struct LocationDialogView: View {
                 }
             }
 
-            Text(selectedAddress.isEmpty ? "اختر موقعًا على الخريطة" : selectedAddress)
+            Text(selectedAddress.isEmpty ? "chooseLocationFromMap".tr() : selectedAddress)
                 .font(.jfFont(size: 18))
                 .lineLimit(2)
                 .padding(8)
             
             ColoredButton(
-                title: "Choose",
+                title: "choose".tr(),
                 isGrediant: true
             ) {
                 isPresented = false
@@ -108,7 +106,7 @@ struct LocationDialogView: View {
         
     private func reverseGeocodeLocation(_ coordinate: CLLocationCoordinate2D) {
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+        CLGeocoder().reverseGeocodeLocation(location, preferredLocale: LocalizationManager.shared.currentLocale) { placemarks, error in
             if let placemark = placemarks?.first {
                 selectedAddress = [
                     placemark.name,

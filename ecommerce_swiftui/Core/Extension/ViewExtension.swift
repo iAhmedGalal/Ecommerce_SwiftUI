@@ -45,4 +45,8 @@ extension View {
     func router() -> some View {
         modifier(RouterViewModifier())
     }
+    
+    func customNavigation(title: String, router: Router, showBackBtn: Bool) -> some View {
+        self.modifier(CustomNavigationModifier(title: title, router: router, showBackBtn: showBackBtn))
+    }
 }

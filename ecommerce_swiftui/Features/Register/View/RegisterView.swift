@@ -80,7 +80,7 @@ struct RegisterView: View {
                     
                     IconTextField(
                         title: "Password".tr(),
-                        placeHolder: "Passwors".tr(),
+                        placeHolder: "Password".tr(),
                         icon: AppAssets.iconLock,
                         isPssword: true,
                         text: $viewModel.passwordTF,
@@ -123,10 +123,11 @@ struct RegisterView: View {
                 }
             }
             .toastView(toast: $viewModel.toast)
-                
+            .customNavigation(title: "createAccount".tr(), router: router, showBackBtn: true)
             .onChange(of: viewModel.navigateToLogin) { oldValue, newValue in
                 if (newValue) {
                     router.push(.login)
+                    viewModel.navigateToLogin = false
                 }
             }
 //            .sheet(isPresented: $viewModel.showMap) {
@@ -135,7 +136,7 @@ struct RegisterView: View {
 //                    selectedAddress: $viewModel.addressTF,
 //                    isPresented: $viewModel.showMap
 //                )
-//                .presentationDetents([.height(425)])
+//                .presentationDetents([.height(525)])
 //            }
             
             if viewModel.showMap {
@@ -151,7 +152,7 @@ struct RegisterView: View {
                     isPresented: $viewModel.showMap
                 )
                 .frame(maxWidth: .infinity)
-                .frame(height: 425)
+                .frame(height: 525)
                 .background(Color.white)
                 .cornerRadius(12)
                 .shadow(radius: 10)

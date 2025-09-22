@@ -18,9 +18,6 @@ struct LoginView: View {
                 .ignoresSafeArea()
             
             VStack {
-                Text("login".tr())
-                    .font(.jfFontBold(size: 22))
-                
                 Image(AppAssets.nameApp)
                     .resizable()
                     .scaledToFit()
@@ -74,7 +71,7 @@ struct LoginView: View {
                     showArrow: false,
                     bgColor: AppColors.darkGrey
                 ) {
-                    router.pushAndPop(.register)
+                    router.push(.register)
                 }
                 .padding(.top, -20)
                 
@@ -90,6 +87,8 @@ struct LoginView: View {
                             .foregroundStyle(.colorRedFav)
                     }
                 }
+                
+                Spacer()
             }
             
             if viewModel.isLoading {
@@ -103,7 +102,7 @@ struct LoginView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
-        .navigationBarBackButtonHidden()
+        .customNavigation(title: "login".tr(), router: router, showBackBtn: false)
         .onAppear {
             viewModel.getUserCredentials()
         }
