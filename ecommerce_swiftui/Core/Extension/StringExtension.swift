@@ -8,15 +8,12 @@
 import SwiftUI
 
 extension String {
-    var tr: String {
-        String(localized: String.LocalizationValue(self))
-    }
-    
-    func tr(with variables: [String: String]) -> String {
-        var localizedString = String(localized: String.LocalizationValue(self))
-        for (key, value) in variables {
-            localizedString = localizedString.replacingOccurrences(of: "{\(key)}", with: value)
+    func tr() -> String {
+        guard let bundle = Bundle.main.path(forResource: LocalizationManager.shared.language.rawValue, ofType: "lproj") else {
+            return NSLocalizedString(self, comment: "")
         }
-        return localizedString
+        
+        let langBundle = Bundle(path: bundle)
+        return NSLocalizedString(self, tableName: nil, bundle: langBundle!, comment: "")
     }
 }

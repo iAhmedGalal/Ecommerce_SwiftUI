@@ -42,7 +42,7 @@ struct ColoredButton: View {
                 
                 
                 if showArrow {
-                    Image(AppAssets.arrowRight)
+                    Image(LocalizationManager.shared.language == .arabic ? AppAssets.arrowLeft : AppAssets.arrowRight)
                         .resizable()
                         .frame(width: 14, height: 25)
                         .padding(12)

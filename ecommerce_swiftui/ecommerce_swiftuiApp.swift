@@ -9,14 +9,15 @@ import SwiftUI
 
 @main
 struct ecommerce_swiftuiApp: App {
-    @StateObject private var languageManager = LanguageManager()
+    @StateObject private var localizationManager = LocalizationManager.shared
 
     var body: some Scene {
         WindowGroup {
             SplashView()
                 .router()
-                .environment(\.locale, languageManager.currentLocale)
-                .environmentObject(languageManager)
+                .environment(\.locale, localizationManager.currentLocale)
+                .environment(\.layoutDirection, localizationManager.layoutDirection)
+                .environmentObject(localizationManager)
         }
     }
 }

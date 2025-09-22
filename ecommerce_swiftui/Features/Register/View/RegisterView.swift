@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RegisterView: View {
     @Environment(Router.self) var router
-    
+
     @StateObject private var viewModel = RegisterViewModel()
     @FocusState private var focusedField: String?
     
@@ -27,8 +27,8 @@ struct RegisterView: View {
                         .padding()
                     
                     IconTextField(
-                        title: "Name",
-                        placeHolder: "Name",
+                        title: "Name".tr(),
+                        placeHolder: "Name".tr(),
                         icon: AppAssets.user,
                         keyboardType: .namePhonePad,
                         text: $viewModel.nameTF,
@@ -37,8 +37,8 @@ struct RegisterView: View {
                     .padding(.bottom, 8)
                     
                     IconTextField(
-                        title: "Email",
-                        placeHolder: "Email",
+                        title: "Email".tr(),
+                        placeHolder: "Email".tr(),
                         icon: AppAssets.mail,
                         keyboardType: .emailAddress,
                         text: $viewModel.mailTF,
@@ -47,8 +47,8 @@ struct RegisterView: View {
                     .padding(.bottom, 8)
                     
                     IconTextField(
-                        title: "Phone",
-                        placeHolder: "Phone",
+                        title: "Phone".tr(),
+                        placeHolder: "Phone".tr(),
                         icon: AppAssets.phone,
                         keyboardType: .asciiCapableNumberPad,
                         text: $viewModel.phoneTF,
@@ -59,8 +59,8 @@ struct RegisterView: View {
 
                     ZStack(alignment: .trailing) {
                         IconTextField(
-                            title: "Address",
-                            placeHolder: "Address",
+                            title: "Address".tr(),
+                            placeHolder: "Address".tr(),
                             icon: AppAssets.map,
                             text: $viewModel.addressTF,
                             focusedField: _focusedField
@@ -79,8 +79,8 @@ struct RegisterView: View {
                     .padding(.bottom, 8)
                     
                     IconTextField(
-                        title: "Password",
-                        placeHolder: "Passwors",
+                        title: "Password".tr(),
+                        placeHolder: "Passwors".tr(),
                         icon: AppAssets.iconLock,
                         isPssword: true,
                         text: $viewModel.passwordTF,
@@ -89,8 +89,8 @@ struct RegisterView: View {
                     .padding(.bottom, 8)
                     
                     IconTextField(
-                        title: "Confirm Password",
-                        placeHolder: "Passwors",
+                        title: "Confirm Password".tr(),
+                        placeHolder: "Confirm Password".tr(),
                         icon: AppAssets.iconLock,
                         isPssword: true,
                         text: $viewModel.confirmPasswordTF,
@@ -103,13 +103,13 @@ struct RegisterView: View {
                             .padding(.leading, 16)
                             .padding(.trailing, 4)
                         
-                        Text("Accept All")
+                        Text("Accept All".tr())
                             .font(.jfFont(size: 18))
                         
                         Button {
                             
                         } label: {
-                            Text("Terms and Conditions")
+                            Text("Terms and Conditions".tr())
                                 .font(.jfFont(size: 18))
                                 .underline()
                         }
@@ -117,7 +117,7 @@ struct RegisterView: View {
                         Spacer()
                     }
                     
-                    ColoredButton(title: "Creat Account", showArrow: false, isGrediant: true) {
+                    ColoredButton(title: "createAccount".tr(), showArrow: false, isGrediant: true) {
                         viewModel.register()
                     }
                 }

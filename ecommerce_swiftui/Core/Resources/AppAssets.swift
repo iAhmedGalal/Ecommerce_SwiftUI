@@ -62,6 +62,7 @@ class AppAssets {
     static let vector = "Vector14"
     static let discount = "discount"
     static let arrowRight = "arrowright"
+    static let arrowLeft = "arrowleft"
     static let clothes = "clothes"
     static let placeholder = "Placeholder"
     static let placeholder2 = "Placeholder-2"

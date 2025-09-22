@@ -11,16 +11,79 @@
 
     },
     "Accept All" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أوافق على جميع"
+          }
+        }
+      }
     },
     "Add Notes" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اضف ملاحظات"
+          }
+        }
+      }
     },
     "Add to Cart" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اضف للسلة"
+          }
+        }
+      }
+    },
+    "Address" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "العنوان"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
+          }
+        }
+      }
+    },
+    "Confirm Password" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تأكيد كلمة المرور"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm Password"
+          }
+        }
+      }
     },
     "Copyright © %@ All Rights Reserved" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copyright © %@ جميع الحقوق محفوظة"
+          }
+        }
+      }
     },
     "createAccount" : {
       "extractionState" : "manual",
@@ -39,17 +102,80 @@
         }
       }
     },
+    "Email" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البريد الإلكتروني"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "Email Or Phone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البريد الإلكتروني أو رقم الهاتف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email Or Phone"
+          }
+        }
+      }
+    },
     "Forget Password" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسيت كلمة المرور"
+          }
+        }
+      }
     },
     "Go to Cart" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اذهب للسلة"
+          }
+        }
+      }
     },
     "Home Screen" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الصفحة الرئيسية"
+          }
+        }
+      }
     },
     "L.B" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ج.م"
+          }
+        }
+      }
     },
     "login" : {
       "extractionState" : "manual",
@@ -75,7 +201,31 @@
 
     },
     "More >>" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المزيد >>"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الاسم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        }
+      }
     },
     "Notifications View" : {
 
@@ -83,14 +233,71 @@
     "Orders View" : {
 
     },
+    "Password" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كلمة المرور"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
+          }
+        }
+      }
+    },
+    "Phone" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الهاتف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone"
+          }
+        }
+      }
+    },
     "Quantity" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الكمية"
+          }
+        }
+      }
     },
     "Remember Me?" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تذكرني؟"
+          }
+        }
+      }
     },
     "Terms and Conditions" : {
-
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الشروط والأحكام"
+          }
+        }
+      }
     },
     "Units Dropdown" : {
 
