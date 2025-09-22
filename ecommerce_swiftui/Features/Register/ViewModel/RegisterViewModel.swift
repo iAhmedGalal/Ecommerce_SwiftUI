@@ -12,6 +12,9 @@ import MapKit
 class RegisterViewModel: ObservableObject {
     @Published var userData: UserModel = UserModel()
     
+    @Published var regionsList: [RegionsModel] = []
+    @Published var selectedCity: RegionsModel = RegionsModel()
+    
     @Published var nameTF: String = ""
     @Published var mailTF: String = ""
     @Published var phoneTF: String = ""
@@ -20,7 +23,6 @@ class RegisterViewModel: ObservableObject {
     @Published var confirmPasswordTF: String = ""
     
     @Published var userType: Int = 0
-    @Published var cityId: Int = 0
     
     @Published var errorMessage: String?
     @Published var isLoading = false
@@ -76,6 +78,14 @@ class RegisterViewModel: ObservableObject {
  
         guard Helper.isValidPhone(phone: phoneTF) else {
             errorMessage = "ادخل رقم جوال صحيح"
+            showErrorToast()
+            return
+        }
+        
+        let cityId =  selectedCity.id ?? 0
+
+        guard cityId != 0 else {
+            errorMessage = "chooseCity".tr()
             showErrorToast()
             return
         }
@@ -165,6 +175,32 @@ class RegisterViewModel: ObservableObject {
                     style: .success,
                     message: user.msg ?? ""
                 )
+            }
+            .store(in: &cancellables)
+    }
+    
+    func getRegions() {
+        let request = APIRequest(path: Urls.regionsList, method: .GET, parameters: nil, requiresAuth: false)
+
+        NetworkManager.shared.request(request, responseType: APIResponse<[RegionsModel]>.self)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                guard let self = self else { return }
+                
+                self.isLoading = false
+                if case let .failure(error) = completion {
+                    self.errorMessage = error.errorDescription
+                }
+            } receiveValue: { [weak self] response in
+                guard let self = self else { return }
+                
+                self.isSuccess = true
+
+                if (response.status == false) {
+                    return
+                }
+
+                regionsList = response.data ?? []
             }
             .store(in: &cancellables)
     }

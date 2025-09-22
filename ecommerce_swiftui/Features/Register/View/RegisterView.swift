@@ -56,6 +56,17 @@ struct RegisterView: View {
                     )
                     .padding(.bottom, 8)
                     
+                    IconTitleCustomView(
+                        title: "chooseCity".tr(),
+                        icon: AppAssets.map,
+                        customView: AnyView(
+                            CityMenuView(
+                                regionsList: viewModel.regionsList,
+                                selectedCity: $viewModel.selectedCity
+                            )
+                        )
+                    )
+                    .padding(.bottom, 8)
 
                     ZStack(alignment: .trailing) {
                         IconTextField(
@@ -124,6 +135,9 @@ struct RegisterView: View {
             }
             .toastView(toast: $viewModel.toast)
             .customNavigation(title: "createAccount".tr(), router: router, showBackBtn: true)
+            .onAppear {
+                viewModel.getRegions()
+            }
             .onChange(of: viewModel.navigateToLogin) { oldValue, newValue in
                 if (newValue) {
                     router.push(.login)

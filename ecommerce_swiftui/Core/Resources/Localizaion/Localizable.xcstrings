@@ -75,6 +75,23 @@
         }
       }
     },
+    "chooseCity" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اختر المدينة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose City"
+          }
+        }
+      }
+    },
     "chooseLocationFromMap" : {
       "extractionState" : "manual",
       "localizations" : {
