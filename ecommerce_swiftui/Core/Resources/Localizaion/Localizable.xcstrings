@@ -15,14 +15,14 @@
       "localizations" : {
         "ar" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "الملف الشخصي"
+            "state" : "needs_review",
+            "value" : "من نحن"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "من نحن"
+            "value" : "About Us"
           }
         }
       }

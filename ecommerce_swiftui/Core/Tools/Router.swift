@@ -96,10 +96,10 @@ struct RouterViewModifier: ViewModifier {
                 FavouritesView()
                 
             case .aboutUs:
-                StaticPagesView()
+                StaticPagesView(pageType: .about)
                 
             case .terms:
-                StaticPagesView()
+                StaticPagesView(pageType: .terms)
                 
             case .contactUs:
                 ContactUsView()
