@@ -1,5 +1,5 @@
 //
-//  ShowDiscountsView.swift
+//  ShowNewItemsView.swift
 //  ecommerce_swiftui
 //
 //  Created by Mahmoud Elzaiady on 23/09/2025.
@@ -7,27 +7,19 @@
 
 import SwiftUI
 
-struct ShowDiscountsView: View {
+struct ShowNewItemsView: View {
     @StateObject private var viewModel = HomeViewModel()
-    
-    var columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-    
+  
     var body: some View {
         ZStack {
             Color(AppColors.greyWhite)
                 .ignoresSafeArea()
             
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(viewModel.discountsList) { item in
-                        ItemsView(item: item)
+                VStack{
+                    ForEach(viewModel.newItemsList) { item in
+                        ItemsVerticalView(item: item)
                             .padding(4)
-                            .onAppear {
-                                viewModel.loadMoreDiscountsIfNeeded(currentItem: item)
-                            }
                     }
                 }
                 .padding(.top, 8)
@@ -39,14 +31,18 @@ struct ShowDiscountsView: View {
                         .padding(.vertical)
                 }
             }
-            .customNavigation(title: "discounts".tr(), showBackBtn: true)
+            .customNavigation(title: "recentlyAdded".tr(), showBackBtn: true)
             .onAppear {
-                viewModel.fetchDiscounts(page: viewModel.discountsPage)
+                viewModel.fetchNewItems()
+            }
+            
+            if viewModel.errorMessage != nil {
+                NoItemsView()
             }
         }
     }
 }
 
 #Preview {
-    ShowDiscountsView()
+    ShowNewItemsView()
 }

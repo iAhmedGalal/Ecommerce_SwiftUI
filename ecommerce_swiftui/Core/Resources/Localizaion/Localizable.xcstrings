@@ -483,6 +483,23 @@
         }
       }
     },
+    "noData" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لا يوجد بيانات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Data Found"
+          }
+        }
+      }
+    },
     "notifications" : {
       "extractionState" : "manual",
       "localizations" : {

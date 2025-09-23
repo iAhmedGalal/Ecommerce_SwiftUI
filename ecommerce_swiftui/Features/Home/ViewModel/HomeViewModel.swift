@@ -15,6 +15,7 @@ class HomeViewModel: ObservableObject {
     @Published var discountsList: [ItemsModel] = []
     @Published var bestSellerList: [ItemsModel] = []
     @Published var newItemsList: [ItemsModel] = []
+    @Published var favList: [ItemsModel] = []
 
     @Published var errorMessage: String?
     @Published var isLoading = false
@@ -57,6 +58,16 @@ class HomeViewModel: ObservableObject {
                 }
                 
             } receiveValue: { [weak self] response in
+                if response.status == false {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                        
+                if (response.data ?? []).isEmpty {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                
                 self?.categoriesList = response.data ?? []
             }
             .store(in: &cancellables)
@@ -74,6 +85,16 @@ class HomeViewModel: ObservableObject {
                     self?.errorMessage = error.errorDescription
                 }
             } receiveValue: { [weak self] response in
+                if response.status == false {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                        
+                if (response.data ?? []).isEmpty {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                
                 self?.companiesList = response.data ?? []
             }
             .store(in: &cancellables)
@@ -94,6 +115,16 @@ class HomeViewModel: ObservableObject {
                     self?.errorMessage = error.errorDescription
                 }
             } receiveValue: { [weak self] response in
+                if response.status == false {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                        
+                if (response.items?.data ?? []).isEmpty {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                
                 if (self?.discountsPage == 1) {
                     self?.discountsList = response.items?.data ?? []
                 } else {
@@ -120,6 +151,16 @@ class HomeViewModel: ObservableObject {
                     self?.errorMessage = error.errorDescription
                 }
             } receiveValue: { [weak self] response in
+                if response.status == false {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                        
+                if (response.items?.data ?? []).isEmpty {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                
                 if (self?.bestSellerPage == 1) {
                     self?.bestSellerList = response.items?.data ?? []
                 } else {
@@ -143,10 +184,111 @@ class HomeViewModel: ObservableObject {
                     self?.errorMessage = error.errorDescription
                 }
             } receiveValue: { [weak self] response in
+                if response.status == false {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                        
+                if (response.items ?? []).isEmpty {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                
                 self?.newItemsList = response.items ?? []
             }
             .store(in: &cancellables)
     }
+
+    //MARK: - Favourites
+    func fetchFavouritrs() {
+        isLoading = true
+        let request = APIRequest(path: Urls.getFavorite, method: .POST, parameters: nil, requiresAuth: true)
+        
+        NetworkManager.shared.request(request, responseType: APIResponse<[ItemsModel]>.self, retries: 2)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                self?.isLoading = false
+                if case let .failure(error) = completion {
+                    self?.errorMessage = error.errorDescription
+                }
+            } receiveValue: { [weak self] response in
+                if response.status == false {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                        
+                if (response.data ?? []).isEmpty {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                
+                self?.favList = response.data ?? []
+            }
+            .store(in: &cancellables)
+    }
+    
+    func addToFavourite(itemId: Int) {
+        isLoading = true
+        
+        let params = [
+            "product_id": "\(itemId)",
+            "client_id": SessionManager.shared.currentUser?.clientId ?? 0,
+            "shop_id": SHOP_ID
+        ] as [String : Any]
+        
+        print(params)
+        
+        let request = APIRequest(path: Urls.addFavorite, method: .POST, parameters: params, requiresAuth: true)
+        
+        NetworkManager.shared.request(request, responseType: APIResponse<UserModel>.self, retries: 2)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                self?.isLoading = false
+                if case let .failure(error) = completion {
+                    self?.errorMessage = error.errorDescription
+                }
+            } receiveValue: { [weak self] response in
+                if response.status == false {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                
+                
+            }
+            .store(in: &cancellables)
+    }
+    
+    func removeFromFavourits(itemId: Int) {
+        isLoading = true
+        
+        let params = [
+            "product_id": "\(itemId)",
+            "client_id": SessionManager.shared.currentUser?.clientId ?? 0,
+            "shop_id": SHOP_ID
+        ] as [String : Any]
+        
+        print(params)
+        
+        let request = APIRequest(path: Urls.removeFavorite, method: .POST, parameters: params, requiresAuth: true)
+        
+        NetworkManager.shared.request(request, responseType: APIResponse<UserModel>.self, retries: 2)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                self?.isLoading = false
+                if case let .failure(error) = completion {
+                    self?.errorMessage = error.errorDescription
+                }
+            } receiveValue: { [weak self] response in
+                if response.status == false {
+                    self?.errorMessage = "noData".tr()
+                    return
+                }
+                
+                
+            }
+            .store(in: &cancellables)
+    }
+
     
     //MARK: - Pagination
     func loadMoreDiscounts() {

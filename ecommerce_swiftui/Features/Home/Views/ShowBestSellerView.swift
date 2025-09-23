@@ -1,5 +1,5 @@
 //
-//  FavouritesView.swift
+//  ShowBestSellerView.swift
 //  ecommerce_swiftui
 //
 //  Created by Mahmoud Elzaiady on 23/09/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FavouritesView: View {
+struct ShowBestSellerView: View {
     @StateObject private var viewModel = HomeViewModel()
     
     var columns = [
@@ -22,23 +22,26 @@ struct FavouritesView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(viewModel.favList) { item in
+                    ForEach(viewModel.bestSellerList) { item in
                         ItemsView(item: item)
                             .padding(4)
+                            .onAppear {
+                                viewModel.loadMoreBestSellerIfNeeded(currentItem: item)
+                            }
                     }
                 }
                 .padding(.top, 8)
+                
+                if viewModel.isLoading {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .padding(.vertical)
+                }
             }
-            .customNavigation(title: "favourites".tr(), showBackBtn: true)
+            .customNavigation(title: "bestSeller".tr(), showBackBtn: true)
             .onAppear {
-                viewModel.fetchFavouritrs()
-            }
-            
-            if viewModel.isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .padding(.vertical)
+                viewModel.fetchBestSeller(page: viewModel.bestSellerPage)
             }
             
             if viewModel.errorMessage != nil {
@@ -49,5 +52,5 @@ struct FavouritesView: View {
 }
 
 #Preview {
-    FavouritesView()
+    ShowBestSellerView()
 }

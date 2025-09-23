@@ -1,5 +1,5 @@
 //
-//  ShowBestSellerView.swift
+//  ShowDiscountsView.swift
 //  ecommerce_swiftui
 //
 //  Created by Mahmoud Elzaiady on 23/09/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ShowBestSellerView: View {
+struct ShowDiscountsView: View {
     @StateObject private var viewModel = HomeViewModel()
     
     var columns = [
@@ -22,11 +22,11 @@ struct ShowBestSellerView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(viewModel.bestSellerList) { item in
+                    ForEach(viewModel.discountsList) { item in
                         ItemsView(item: item)
                             .padding(4)
                             .onAppear {
-                                viewModel.loadMoreBestSellerIfNeeded(currentItem: item)
+                                viewModel.loadMoreDiscountsIfNeeded(currentItem: item)
                             }
                     }
                 }
@@ -39,14 +39,18 @@ struct ShowBestSellerView: View {
                         .padding(.vertical)
                 }
             }
-            .customNavigation(title: "bestSeller".tr(), showBackBtn: true)
+            .customNavigation(title: "discounts".tr(), showBackBtn: true)
             .onAppear {
-                viewModel.fetchBestSeller(page: viewModel.bestSellerPage)
+                viewModel.fetchDiscounts(page: viewModel.discountsPage)
+            }
+            
+            if viewModel.errorMessage != nil {
+                NoItemsView()
             }
         }
     }
 }
 
 #Preview {
-    ShowBestSellerView()
+    ShowDiscountsView()
 }
