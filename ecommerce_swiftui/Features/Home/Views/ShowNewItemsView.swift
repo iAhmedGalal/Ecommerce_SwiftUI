@@ -18,7 +18,7 @@ struct ShowNewItemsView: View {
             ScrollView {
                 VStack{
                     ForEach(viewModel.newItemsList) { item in
-                        ItemsVerticalView(item: item)
+                        ItemsVerticalView(viewModel: viewModel, item: item)
                             .padding(4)
                     }
                 }

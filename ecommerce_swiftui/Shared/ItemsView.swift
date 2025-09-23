@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ItemsView: View {
     @Environment(Router.self) var router
-
+    @ObservedObject var viewModel: HomeViewModel
+    
     var item: ItemsModel
 
     var body: some View {
@@ -21,9 +22,10 @@ struct ItemsView: View {
 
                 HStack(alignment: .top) {
                     Button {
-
+                        let newFav = !(item.fav ?? false)
+                        viewModel.updateFavoriteIcon(itemId: item.id ?? 0, isFav: newFav, in: &vi)
                     } label: {
-                        Image(AppAssets.favorite)
+                        Image(item.fav ?? false ? AppAssets.favoriteSelect : AppAssets.favorite)
                             .resizable()
                             .frame(width: 30, height: 30)
                             .padding(8)
@@ -32,7 +34,6 @@ struct ItemsView: View {
                             .clipShape(Circle())
                     }
    
-                    
                     Spacer()
                     
                     if item.unitsArr?.first?.has_discount == 1{

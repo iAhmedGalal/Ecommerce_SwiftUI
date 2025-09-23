@@ -10,6 +10,8 @@ import SwiftUI
 struct ItemsVerticalView: View {
     @Environment(Router.self) var router
 
+    @ObservedObject var viewModel: HomeViewModel
+    
     var item: ItemsModel
 
     var body: some View {
@@ -55,9 +57,13 @@ struct ItemsVerticalView: View {
                     Spacer()
                     
                     Button {
-
+                        item.fav ?? false
+                        ? viewModel.addToFavourite(itemId: item.id ?? 0)
+                        : viewModel.removeFromFavourits(itemId: item.id ?? 0)
+                        
+                        item.fav = !(item.fav ?? false)
                     } label: {
-                        Image(AppAssets.favorite)
+                        Image(item.fav ?? false ? AppAssets.favoriteSelect : AppAssets.favorite)
                             .resizable()
                             .frame(width: 30, height: 30)
                             .padding(8)

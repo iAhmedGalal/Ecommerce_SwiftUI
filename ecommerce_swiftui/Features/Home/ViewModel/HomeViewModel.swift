@@ -289,6 +289,13 @@ class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
+    func updateFavoriteIcon(itemId: Int, isFav: Bool, in list: inout [ItemsModel]) {
+        if let index = list.firstIndex(where: { $0.id == itemId }) {
+            list[index].fav = isFav
+        }
+        
+        isFav ? addToFavourite(itemId: itemId) : removeFromFavourits(itemId: itemId)
+    }
     
     //MARK: - Pagination
     func loadMoreDiscounts() {
