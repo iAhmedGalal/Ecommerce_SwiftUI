@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct DiscountsView: View {
-    @State var path = NavigationPath()
     var discountsList: [ItemsModel]
     
     var body: some View {
-        HomeDividerView(title: "Discounts", showMore: true, route: .dicounts)
+        HomeDividerView(title: "discounts".tr(), showMore: true, route: .dicounts)
 
         ScrollView(.horizontal) {
             HStack{
@@ -20,7 +19,7 @@ struct DiscountsView: View {
                     ItemsView(item: item)
                         .padding(4)
                         .onTapGesture {
-                            path.append("details")
+                            
                         }
                 }
             }

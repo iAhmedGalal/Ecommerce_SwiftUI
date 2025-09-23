@@ -31,7 +31,9 @@ class ImageLoader: ObservableObject {
                 if let img = $0 {
                     ImageCache.shared.setObject(img, forKey: url as NSURL)
                 }
-                self?.isLoading = false
+                DispatchQueue.main.async {
+                    self?.isLoading = false
+                }
             })
             .receive(on: DispatchQueue.main)
             .assign(to: \.image, on: self)

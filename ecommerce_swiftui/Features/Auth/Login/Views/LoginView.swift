@@ -102,7 +102,7 @@ struct LoginView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
         }
-        .customNavigation(title: "login".tr(), router: router, showBackBtn: false)
+        .customNavigation(title: "login".tr(), showBackBtn: false)
         .onAppear {
             viewModel.getUserCredentials()
         }

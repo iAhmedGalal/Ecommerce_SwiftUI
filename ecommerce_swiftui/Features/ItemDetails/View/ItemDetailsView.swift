@@ -12,120 +12,90 @@ struct ItemDetailsView: View {
     
     @StateObject private var viewModel = ItemDetailsViewModel()
 
-//    @State private var itemI: String = ""
-//    @State private var unitPrice: Double = 0.0
-//    @State private var totalItemPrice: Double = 0.0
-//    @State private var totalCartPrice: Double = 0.0
-    
-//    var itemName: String
-//    var imageUrl: String
-    
     var body: some View {
-        ScrollView {
-            VStack(alignment: .center, spacing: 12) {
-                
-                Text(viewModel.item.itemName ?? "")
-                    .font(.system(size: 20, weight: .bold))
-                    .multilineTextAlignment(.center)
-                
-                AsyncImage(url: URL(string: viewModel.item.img ?? "")) { image in
-                    image.resizable()
-                } placeholder: {
-                    ProgressView()
-                }
-                .scaledToFit()
-                .frame(height: 150)
-                .cornerRadius(10)
-                
-                // Dropdown Placeholder
-                Text("Units Dropdown")
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(8)
-                
-                Text("Quantity")
-                    .font(.system(size: 16))
-                
-//                HStack {
-//                    Button(action: { selectedQuantity += 1 }) {
-//                        Image(systemName: "plus")
-//                    }
-//                    Text("\(selectedQuantity)")
-//                        .frame(minWidth: 40)
-//                    Button(action: { if selectedQuantity > 1 { selectedQuantity -= 1 } }) {
-//                        Image(systemName: "minus")
-//                    }
-//                }
-//                .padding()
-//                .background(Color.gray.opacity(0.2))
-//                .cornerRadius(20)
-                
-                Text("Max Quantity: 10")
-                
-//                PriceText(label: "Unit Price", price: viewModel.item.salePrice ?? "")
-//                PriceText(label: "Total Item Price", price: totalItemPrice)
-//                PriceText(label: "Total Cart Price", price: totalCartPrice)
-                
-                Text("Add Notes")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-//                TextEditor(text: $notes)
-//                    .frame(height: 100)
-//                    .padding()
-//                    .background(Color.gray.opacity(0.2))
-//                    .cornerRadius(20)
-                
-                HStack {
-                    Button(action: {
-                        // Go to cart
-                    }) {
-                        HStack {
-                            Image(systemName: "cart")
-                            Text("Go to Cart")
+        ZStack {
+            Color(AppColors.greyWhite)
+                .ignoresSafeArea()
+            
+            ScrollView {
+                VStack {
+                    ZStack(alignment: .topLeading) {
+                        CachedAsyncImageView(url: viewModel.item.img ?? "")
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 300)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                        HStack(alignment: .top) {
+                            Button {
+
+                            } label: {
+                                Image(AppAssets.favorite)
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .padding(8)
+                                    .background(Color(AppColors.greyLight))
+                                    .foregroundColor(Color.red)
+                                    .clipShape(Circle())
+                            }
+           
+                            
+                            Spacer()
+                            
+                            if viewModel.item.unitsArr?.first?.has_discount == 1{
+                                DiscountTagComponent(
+                                    discount: viewModel.item.unitsArr?.first?.discount ?? "",
+                                    discounType: viewModel.item.unitsArr?.first?.discount_type ?? 0
+                                )
+                            }
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
+                        .padding(10)
                     }
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 1)
+
+                    Text(viewModel.item.itemName ?? "")
+                        .font(.jfFontBold(size: 20))
+                        .lineLimit(2)
                     
-                    Button(action: {
-                        // Add to cart
-                    }) {
-                        HStack {
-                            Image(systemName: "cart.badge.plus")
-                            Text("Add to Cart")
+                    HStack(alignment: .bottom) {
+                        VStack(alignment: .leading) {
+                            Text(viewModel.item.unitsArr?.first?.unit_name ?? "")
+                                .font(.jfFont(size: 16))
+                            
+                            if viewModel.item.unitsArr?.first?.has_discount == 1 {
+                                Text(viewModel.item.unitsArr?.first?.sale_price ?? "")
+                                    .font(.jfFont(size: 16))
+                                    .strikethrough()
+                            }
+                            
+                            Text(viewModel.item.unitsArr?.first?.new_price ?? "")
+                                .font(.jfFont(size: 16))
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
+                        .padding(.horizontal, 8)
+                        
+                        Spacer()
+                        
+                        Button {
+                            
+                        }
+                        label: {
+                          Image(AppAssets.cart3)
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                        }
+                        .padding(12)
+                        .background(Color(AppColors.grey))
+                        .cornerRadius(8, corners: [.topLeft, .bottomRight])
+
                     }
                 }
+                .padding()
             }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(20)
-            .padding()
         }
+        .customNavigation(title: viewModel.item.itemName ?? "", showBackBtn: true)
         .onAppear {
             viewModel.getItemDetails(id: itemId)
         }
-    }
-}
-
-struct PriceText: View {
-    var label: String
-    var price: Double
-    
-    var body: some View {
-        HStack {
-            Text(label)
-            Spacer()
-            Text(String(format: "%.2f", price))
-        }
-        .padding(.horizontal)
     }
 }

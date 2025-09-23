@@ -9,8 +9,9 @@ import SwiftUI
 
 struct CustomNavigationModifier: ViewModifier {
     let title: String
-    let router: Router
-    var showBackBtn: Bool = true
+    let showBackBtn: Bool
+    
+    @Environment(Router.self) var router
     
     func body(content: Content) -> some View {
         content

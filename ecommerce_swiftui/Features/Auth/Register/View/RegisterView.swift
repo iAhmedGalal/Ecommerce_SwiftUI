@@ -134,7 +134,7 @@ struct RegisterView: View {
                 }
             }
             .toastView(toast: $viewModel.toast)
-            .customNavigation(title: "createAccount".tr(), router: router, showBackBtn: true)
+            .customNavigation(title: "createAccount".tr(), showBackBtn: true)
             .onAppear {
                 viewModel.getRegions()
             }

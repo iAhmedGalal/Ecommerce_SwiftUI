@@ -11,7 +11,7 @@ struct CompaniesView: View {
     var companisList: [CompaniesModel]
     
     var body: some View {
-        HomeDividerView(title: "Companies", showMore: false)
+        HomeDividerView(title: "companies".tr(), showMore: false)
 
         ScrollView(.horizontal, showsIndicators: false) {
             HStack{

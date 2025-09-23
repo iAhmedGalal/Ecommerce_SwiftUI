@@ -18,6 +18,14 @@ enum AppRoutes: Hashable {
     case bestSeller
     case dicounts
     case newItems
+    case profile
+    case companies
+    case categories
+    case favourites
+    case aboutUs
+    case terms
+    case contactUs
+    
 }
 
 @Observable
@@ -67,14 +75,34 @@ struct RouterViewModifier: ViewModifier {
                 ItemDetailsView(itemId: itemId)
                 
             case .bestSeller:
-                EmptyView()
+                ShowBestSellerView()
                 
             case .dicounts:
-                EmptyView()
+                ShowDiscountsView()
 
             case .newItems:
-                EmptyView()
+                ShowNewItemsView()
 
+            case .profile:
+                ProfileView()
+                
+            case .companies:
+                ShowCompaniesView()
+                
+            case .categories:
+                ShowCategoriesView()
+                
+            case .favourites:
+                FavouritesView()
+                
+            case .aboutUs:
+                StaticPagesView()
+                
+            case .terms:
+                StaticPagesView()
+                
+            case .contactUs:
+                ContactUsView()
             }
         }
         .environment(router)

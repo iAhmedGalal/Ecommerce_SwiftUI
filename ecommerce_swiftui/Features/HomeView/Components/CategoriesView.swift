@@ -17,7 +17,7 @@ struct CategoriesView: View {
     ]
     
     var body: some View {
-        HomeDividerView(title: "Categories", showMore: false)
+        HomeDividerView(title: "categories".tr(), showMore: false)
 
         ScrollView {
             LazyVGrid(columns: columns, spacing: 8) {

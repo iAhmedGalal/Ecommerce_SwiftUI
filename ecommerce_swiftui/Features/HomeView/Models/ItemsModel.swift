@@ -93,3 +93,10 @@ struct ItemsModel: Identifiable, Decodable {
         case hasDiscount = "has_discount", remainDiscountQuantity = "remain_discount_quantity"
     }
 }
+
+extension ItemsModel: Equatable {
+    static func == (lhs: ItemsModel, rhs: ItemsModel) -> Bool {
+        return lhs.id == rhs.id && lhs.name == rhs.name
+        // مش هنقارن extraData علشان مش Equatable
+    }
+}

@@ -8,78 +8,51 @@
 import SwiftUI
 
 struct HomeNavView: View {
-    @State var currentIndex: Int = 0
-    var maxHeight: Double = 80
-    
+    @StateObject private var viewModel = HomeNavViewModel()
+    @Environment(Router.self) var router
+    private let gradientColors = [Color(AppColors.gradientColor1), Color(AppColors.gradientColor2)]
+
     var body: some View {
         ZStack {
             Color(AppColors.greyWhite)
                 .ignoresSafeArea()
             
             VStack {
-                if (currentIndex == 0) {
+                switch viewModel.selectedIndex {
+                case 0:
                     HomeView()
-                }
-                
-                if (currentIndex == 1) {
+                case 1:
                     OrdersView()
-                }
-                
-                if (currentIndex == 2) {
+                case 2:
                     NotificationsView()
-                }
-                
-                if (currentIndex == 3) {
+                case 3:
                     MenuView()
+                default:
+                    EmptyView()
                 }
                 
                 HStack(spacing: 0) {
-                    HomeNavItem(
-                        title: "Home",
-                        image: AppAssets.homeGrey,
-                        index: 0,
-                        currentIndex: $currentIndex
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: maxHeight)
-                    .background(Color(currentIndex == 0 ? AppColors.darkPrimary : AppColors.white))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-
-                    HomeNavItem(
-                        title: "Orders",
-                        image: AppAssets.bagGrey,
-                        index: 1,
-                        currentIndex: $currentIndex
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: maxHeight)
-                    .background(Color(currentIndex == 1 ? AppColors.darkPrimary : AppColors.white))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-
-                    HomeNavItem(
-                        title: "Notifications",
-                        image: AppAssets.ball,
-                        index: 2,
-                        currentIndex: $currentIndex
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: maxHeight)
-                    .background(Color(currentIndex == 2 ? AppColors.darkPrimary : AppColors.white))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-
-                    HomeNavItem(
-                        title: "More",
-                        image: AppAssets.moreGrey,
-                        index: 3,
-                        currentIndex: $currentIndex
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: maxHeight)
-                    .background(Color(currentIndex == 3 ? AppColors.darkPrimary : AppColors.white))
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-
+                    ForEach(viewModel.navPages) { nav in
+                        HomeNavItem(
+                            title: nav.title,
+                            image: nav.image,
+                            index: nav.id,
+                            currentIndex: $viewModel.selectedIndex
+                        )
+                        .frame(maxWidth: .infinity, maxHeight: viewModel.maxHeight)
+                        .background(
+                            LinearGradient(
+                                gradient: Gradient(colors: viewModel.selectedIndex == nav.id ? gradientColors : [AppColors.white]),
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
                 }
                 .background(Color(AppColors.white))
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding(.horizontal, 8)
-                
-                Spacer()
             }
             .toolbar {
                 ToolbarItem {
@@ -102,7 +75,12 @@ struct HomeNavView: View {
                         }
                     }
                 }
-                                
+                
+                ToolbarItem(placement: .principal) {
+                    Text(viewModel.navPages[viewModel.selectedIndex].title)
+                        .font(.jfFont(size: 20))
+                }
+                
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         
@@ -114,34 +92,9 @@ struct HomeNavView: View {
                     }
                 }
             }
-            .navigationTitle("Home Screen")
+            .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
 
-        }
-    }
-}
-
-struct HomeNavItem: View {
-    var title: String
-    var image: String
-    var index: Int
-    @Binding var currentIndex: Int
-    
-    var body: some View {
-        Button {
-            currentIndex = index
-        } label: {
-            VStack(spacing: 8) {
-                Image(image)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 25, height: 25)
-                    .foregroundStyle(currentIndex == index ? .white : .gray)
-
-                Text(title)
-                    .font(.jfFont(size: 14))
-                    .foregroundStyle(currentIndex == index ? .white : .gray)
-            }
         }
     }
 }

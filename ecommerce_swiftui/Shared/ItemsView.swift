@@ -16,8 +16,7 @@ struct ItemsView: View {
         VStack {
             ZStack(alignment: .topLeading) {
                 CachedAsyncImageView(url: item.img ?? "")
-                    .scaledToFit()
-                    .frame(height: 200)
+                    .frame(width: 200, height: 200)
                     .cornerRadius(8, corners: [.topRight, .topLeft])
 
                 HStack(alignment: .top) {
@@ -83,7 +82,7 @@ struct ItemsView: View {
         }
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .shadow(radius: 3)
+        .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 1)
         .onTapGesture {
             router.push(.itemDetailds(item.id ?? 0))
         }

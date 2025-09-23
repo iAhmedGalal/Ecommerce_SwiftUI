@@ -43,8 +43,8 @@ struct HomeView: View {
             viewModel.fetchSlider()
             viewModel.fetchCategories()
             viewModel.fetchCompanies()
-            viewModel.fetchDiscounts()
-            viewModel.fetchBestSeller()
+            viewModel.fetchDiscounts(page: 1)
+            viewModel.fetchBestSeller(page: 1)
             viewModel.fetchNewItems()
         }
 

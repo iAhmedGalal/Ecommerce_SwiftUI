@@ -11,5 +11,7 @@ struct NotificationsView: View {
     var body: some View {
         Text("Notifications View")
             .font(.jfFontBold(size: 20))
+            .navigationBarBackButtonHidden()
+
     }
 }

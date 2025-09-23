@@ -84,7 +84,8 @@ struct ItemsVerticalView: View {
         }
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .shadow(radius: 3)
+        .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 1)
+        .padding(.horizontal, 8)
         .onTapGesture {
             router.push(.itemDetailds(item.id ?? 0))
         }

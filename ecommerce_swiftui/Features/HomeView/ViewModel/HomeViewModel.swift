@@ -19,6 +19,12 @@ class HomeViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isLoading = false
     
+    @Published var discountsPage = 1
+    @Published var discountsLastPage = 1
+
+    @Published var bestSellerPage = 1
+    @Published var bestSellerLastPage = 1
+    
     private var cancellables = Set<AnyCancellable>()
     
     func fetchSlider() {
@@ -73,9 +79,12 @@ class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func fetchDiscounts() {
+    func fetchDiscounts(page: Int) {
         isLoading = true
-        let request = APIRequest(path: Urls.discountsList, method: .GET, parameters: nil, requiresAuth: false)
+        
+        let params = ["page": "\(page)"]
+        
+        let request = APIRequest(path: Urls.discountsList, method: .GET, parameters: params, requiresAuth: true)
         
         NetworkManager.shared.request(request, responseType: APIResponse<PaginationResponse<ItemsModel>>.self, retries: 2)
             .receive(on: DispatchQueue.main)
@@ -85,14 +94,23 @@ class HomeViewModel: ObservableObject {
                     self?.errorMessage = error.errorDescription
                 }
             } receiveValue: { [weak self] response in
-                self?.discountsList = response.items?.data ?? []
+                if (self?.discountsPage == 1) {
+                    self?.discountsList = response.items?.data ?? []
+                } else {
+                    self?.discountsList.append(contentsOf: response.items?.data ?? [])
+                }
+                
+                self?.discountsLastPage = response.items?.last_page ?? 1
             }
             .store(in: &cancellables)
     }
     
-    func fetchBestSeller() {
+    func fetchBestSeller(page: Int) {
         isLoading = true
-        let request = APIRequest(path: Urls.mostOrderList, method: .GET, parameters: nil, requiresAuth: false)
+        
+        let params = ["page": "\(page)"]
+        
+        let request = APIRequest(path: Urls.mostOrderList, method: .GET, parameters: params, requiresAuth: true)
         
         NetworkManager.shared.request(request, responseType: APIResponse<PaginationResponse<ItemsModel>>.self, retries: 2)
             .receive(on: DispatchQueue.main)
@@ -102,7 +120,13 @@ class HomeViewModel: ObservableObject {
                     self?.errorMessage = error.errorDescription
                 }
             } receiveValue: { [weak self] response in
-                self?.bestSellerList = response.items?.data ?? []
+                if (self?.bestSellerPage == 1) {
+                    self?.bestSellerList = response.items?.data ?? []
+                } else {
+                    self?.bestSellerList.append(contentsOf: response.items?.data ?? [])
+                }
+                
+                self?.bestSellerLastPage = response.items?.last_page ?? 1
             }
             .store(in: &cancellables)
     }
@@ -122,5 +146,30 @@ class HomeViewModel: ObservableObject {
                 self?.newItemsList = response.items ?? []
             }
             .store(in: &cancellables)
+    }
+    
+    //MARK: - Pagination
+    func loadMoreDiscounts() {
+        if (discountsPage < discountsLastPage) {
+            discountsPage += 1
+            fetchDiscounts(page: discountsPage)
+        }
+    }
+    
+    func loadMoreBestSellers() {
+        if (bestSellerPage < bestSellerLastPage) {
+            bestSellerPage += 1
+            fetchBestSeller(page: bestSellerPage)
+        }
+    }
+    
+    func loadMoreBestSellerIfNeeded(currentItem: ItemsModel) {
+        guard !isLoading, currentItem == bestSellerList.last else { return }
+        loadMoreBestSellers()
+    }
+    
+    func loadMoreDiscountsIfNeeded(currentItem: ItemsModel) {
+        guard !isLoading, currentItem == discountsList.last else { return }
+        loadMoreDiscounts()
     }
 }

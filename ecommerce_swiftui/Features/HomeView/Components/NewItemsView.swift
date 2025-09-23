@@ -11,7 +11,7 @@ struct NewItemsView: View {
     var newItemsList: [ItemsModel]
 
     var body: some View {
-        HomeDividerView(title: "New Items", showMore: true, route: .newItems)
+        HomeDividerView(title: "recentlyAdded".tr(), showMore: true, route: .newItems)
         
         ScrollView(.vertical) {
             VStack{

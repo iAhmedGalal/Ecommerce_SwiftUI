@@ -12,5 +12,7 @@ struct OrdersView: View {
     var body: some View {
         Text("Orders View")
             .font(.jfFontBold(size: 20))
+            .navigationBarBackButtonHidden()
+
     }
 }
