@@ -23,7 +23,7 @@ struct ShowDiscountsView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 8) {
                     ForEach(viewModel.discountsList) { item in
-                        ItemsView(viewModel: viewModel, item: item)
+                        ItemsView(viewModel: viewModel, item: item, itemType: .discounts)
                             .padding(4)
                             .onAppear {
                                 viewModel.loadMoreDiscountsIfNeeded(currentItem: item)

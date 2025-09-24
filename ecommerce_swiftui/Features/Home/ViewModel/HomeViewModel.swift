@@ -8,6 +8,12 @@
 import Combine
 import SwiftUI
 
+enum ItemListType {
+    case bestSeller
+    case newItems
+    case discounts
+}
+
 class HomeViewModel: ObservableObject {
     @Published var sliderList: [SliderModel] = []
     @Published var categoriesList: [CategoriesModel] = []
@@ -202,7 +208,14 @@ class HomeViewModel: ObservableObject {
     //MARK: - Favourites
     func fetchFavouritrs() {
         isLoading = true
-        let request = APIRequest(path: Urls.getFavorite, method: .POST, parameters: nil, requiresAuth: true)
+        
+        let params = [
+            "api_token": SessionManager.shared.currentUser?.token ?? "",
+            "client_id": SessionManager.shared.currentUser?.clientId ?? 0,
+            "shop_id": SHOP_ID,
+        ] as [String : Any]
+        
+        let request = APIRequest(path: Urls.getFavorite, method: .POST, parameters: params, requiresAuth: true)
         
         NetworkManager.shared.request(request, responseType: APIResponse<[ItemsModel]>.self, retries: 2)
             .receive(on: DispatchQueue.main)
@@ -233,12 +246,14 @@ class HomeViewModel: ObservableObject {
         let params = [
             "product_id": "\(itemId)",
             "client_id": SessionManager.shared.currentUser?.clientId ?? 0,
-            "shop_id": SHOP_ID
+            "shop_id": SHOP_ID,
+            "is_group": 0
         ] as [String : Any]
-        
-        print(params)
-        
+                
         let request = APIRequest(path: Urls.addFavorite, method: .POST, parameters: params, requiresAuth: true)
+        
+        print("jhjhhhhhhhh: ", request.urlRequest)
+        print("jhjhhhhhhhh: ", request.parameters)
         
         NetworkManager.shared.request(request, responseType: APIResponse<UserModel>.self, retries: 2)
             .receive(on: DispatchQueue.main)
@@ -264,12 +279,14 @@ class HomeViewModel: ObservableObject {
         let params = [
             "product_id": "\(itemId)",
             "client_id": SessionManager.shared.currentUser?.clientId ?? 0,
-            "shop_id": SHOP_ID
+            "shop_id": SHOP_ID,
+            "is_group": 0
         ] as [String : Any]
-        
-        print(params)
-        
+                
         let request = APIRequest(path: Urls.removeFavorite, method: .POST, parameters: params, requiresAuth: true)
+        
+        print("jhjhhhhhhhh: ", request.urlRequest)
+        print("jhjhhhhhhhh: ", request.parameters)
         
         NetworkManager.shared.request(request, responseType: APIResponse<UserModel>.self, retries: 2)
             .receive(on: DispatchQueue.main)
@@ -289,9 +306,20 @@ class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    func updateFavoriteIcon(itemId: Int, isFav: Bool, in list: inout [ItemsModel]) {
-        if let index = list.firstIndex(where: { $0.id == itemId }) {
-            list[index].fav = isFav
+    func updateFavoriteIcon(itemId: Int, isFav: Bool, in list: ItemListType) {
+        switch list {
+        case .bestSeller:
+            if let index = bestSellerList.firstIndex(where: { $0.id == itemId }) {
+                bestSellerList[index].fav = isFav
+            }
+        case .newItems:
+            if let index = newItemsList.firstIndex(where: { $0.id == itemId }) {
+                newItemsList[index].fav = isFav
+            }
+        case .discounts:
+            if let index = discountsList.firstIndex(where: { $0.id == itemId }) {
+                discountsList[index].fav = isFav
+            }
         }
         
         isFav ? addToFavourite(itemId: itemId) : removeFromFavourits(itemId: itemId)

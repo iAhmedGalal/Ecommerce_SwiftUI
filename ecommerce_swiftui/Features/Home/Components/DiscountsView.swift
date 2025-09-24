@@ -9,18 +9,16 @@ import SwiftUI
 
 struct DiscountsView: View {
     var discountsList: [ItemsModel]
-    
+    @ObservedObject var viewModel: HomeViewModel
+
     var body: some View {
         HomeDividerView(title: "discounts".tr(), showMore: true, route: .dicounts)
 
         ScrollView(.horizontal) {
             HStack{
                 ForEach(discountsList) { item in
-                    ItemsView(item: item)
+                    ItemsView(viewModel: viewModel, item: item, itemType: .discounts)
                         .padding(4)
-                        .onTapGesture {
-                            
-                        }
                 }
             }
         }

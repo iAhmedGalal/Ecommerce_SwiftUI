@@ -13,6 +13,7 @@ struct ItemsVerticalView: View {
     @ObservedObject var viewModel: HomeViewModel
     
     var item: ItemsModel
+    var itemType: ItemListType
 
     var body: some View {
         HStack {
@@ -57,11 +58,8 @@ struct ItemsVerticalView: View {
                     Spacer()
                     
                     Button {
-                        item.fav ?? false
-                        ? viewModel.addToFavourite(itemId: item.id ?? 0)
-                        : viewModel.removeFromFavourits(itemId: item.id ?? 0)
-                        
-                        item.fav = !(item.fav ?? false)
+                        let newFav = !(item.fav ?? false)
+                        viewModel.updateFavoriteIcon(itemId: item.id ?? 0, isFav: newFav, in: itemType)
                     } label: {
                         Image(item.fav ?? false ? AppAssets.favoriteSelect : AppAssets.favorite)
                             .resizable()

@@ -25,15 +25,15 @@ struct HomeView: View {
                     }
                     
                     if (viewModel.discountsList.isEmpty == false) {
-                        DiscountsView(discountsList: viewModel.discountsList)
+                        DiscountsView(discountsList: viewModel.discountsList, viewModel: viewModel)
                     }
                     
                     if (viewModel.bestSellerList.isEmpty == false) {
-                        BestSellerView(bestSellerList: viewModel.bestSellerList)
+                        BestSellerView(bestSellerList: viewModel.bestSellerList, viewModel: viewModel)
                     }
                     
                     if (viewModel.newItemsList.isEmpty == false) {
-                        NewItemsView(newItemsList: viewModel.newItemsList)
+                        NewItemsView(newItemsList: viewModel.newItemsList, viewModel: viewModel)
                     }
                 }
             }

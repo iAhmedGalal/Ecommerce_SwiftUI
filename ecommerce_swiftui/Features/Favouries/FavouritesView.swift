@@ -22,10 +22,10 @@ struct FavouritesView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(viewModel.favList) { item in
-                        ItemsView(item: item)
-                            .padding(4)
-                    }
+//                    ForEach(viewModel.favList) { item in
+//                        ItemsView(item: item)
+//                            .padding(4)
+//                    }
                 }
                 .padding(.top, 8)
             }

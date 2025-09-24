@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewItemsView: View {
     var newItemsList: [ItemsModel]
+    @ObservedObject var viewModel: HomeViewModel
 
     var body: some View {
         HomeDividerView(title: "recentlyAdded".tr(), showMore: true, route: .newItems)
@@ -16,7 +17,7 @@ struct NewItemsView: View {
         ScrollView(.vertical) {
             VStack{
                 ForEach(newItemsList) { item in
-                    ItemsVerticalView(item: item)
+                    ItemsVerticalView(viewModel: viewModel, item: item, itemType: .newItems)
                         .padding(4)
                 }
             }
