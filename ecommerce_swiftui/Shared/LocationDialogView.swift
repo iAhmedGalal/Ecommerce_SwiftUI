@@ -13,8 +13,10 @@ struct LocationDialogView: View {
     @State var userCoordinate: CLLocationCoordinate2D?
 
     @Binding var selectedCoordinate: CLLocationCoordinate2D?
-    @Binding var selectedAddress: String
     @Binding var isPresented: Bool
+    @Binding var selectedAddress: String
+    
+    @ObservedObject private var locationManager = LocationManager()
     
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 30.0444, longitude: 31.2357), // Cairo as default
@@ -36,25 +38,51 @@ struct LocationDialogView: View {
                         }
                     }
                     .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onEnded { value in
-                                let tapPoint = value.location
-                                if let mapCoordinate = proxy.convert(tapPoint, from: .local) {
-                                    selectedCoordinate = mapCoordinate
-                                    reverseGeocodeLocation(mapCoordinate)
+                        TapGesture().onEnded({ point in
+                            if let mapCoordinate = proxy.convert(, from: .local) {
+                                selectedCoordinate = mapCoordinate
+                                locationManager.reverseGeocodeLocation(mapCoordinate)
+                                
+                                withAnimation {
+                                    region = MKCoordinateRegion(
+                                        center: CLLocationCoordinate2D(
+                                            latitude: selectedCoordinate?.latitude ?? 0.0,
+                                            longitude: selectedCoordinate?.longitude ?? 0.0
+                                        ),
+                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                                    )
                                     
-                                    withAnimation {
-                                        region = MKCoordinateRegion(
-                                            center: CLLocationCoordinate2D(
-                                                latitude: selectedCoordinate?.latitude ?? 0.0,
-                                                longitude: selectedCoordinate?.longitude ?? 0.0
-                                            ),
-                                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                                        )
-                                    }
+                                    selectedAddress = locationManager.address.isEmpty ? "chooseLocationFromMap".tr() : locationManager.address
                                 }
                             }
+                        })
                     )
+                    .onTapGesture {
+                        let tapPoint = value
+
+                    }
+//                    .gesture(
+//                        DragGesture(minimumDistance: 0)
+//                            .onEnded { value in
+//                                let tapPoint = value.location
+//                                if let mapCoordinate = proxy.convert(tapPoint, from: .local) {
+//                                    selectedCoordinate = mapCoordinate
+//                                    locationManager.reverseGeocodeLocation(mapCoordinate)
+//                                    
+//                                    withAnimation {
+//                                        region = MKCoordinateRegion(
+//                                            center: CLLocationCoordinate2D(
+//                                                latitude: selectedCoordinate?.latitude ?? 0.0,
+//                                                longitude: selectedCoordinate?.longitude ?? 0.0
+//                                            ),
+//                                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+//                                        )
+//                                        
+//                                        selectedAddress = locationManager.address.isEmpty ? "chooseLocationFromMap".tr() : locationManager.address
+//                                    }
+//                                }
+//                            }
+//                    )
                 }
                 .frame(height: 375)
                 .cornerRadius(12, corners: [.topLeft, .topRight])
@@ -76,7 +104,7 @@ struct LocationDialogView: View {
                 }
             }
 
-            Text(selectedAddress.isEmpty ? "chooseLocationFromMap".tr() : selectedAddress)
+            Text(selectedAddress)
                 .font(.jfFont(size: 18))
                 .lineLimit(2)
                 .padding(8)
@@ -90,30 +118,17 @@ struct LocationDialogView: View {
             .padding(.top, 8)
         }
         .onAppear {
-            LocationManager.shared.requestLocation { coordinate in
-                userCoordinate = coordinate
-                
-                region = MKCoordinateRegion(
-                    center: CLLocationCoordinate2D(
-                        latitude: userCoordinate?.latitude ?? 0.0,
-                        longitude: userCoordinate?.longitude ?? 0.0
-                    ),
-                    span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                )
-            }
-        }
-    }
-        
-    private func reverseGeocodeLocation(_ coordinate: CLLocationCoordinate2D) {
-        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        CLGeocoder().reverseGeocodeLocation(location, preferredLocale: LocalizationManager.shared.currentLocale) { placemarks, error in
-            if let placemark = placemarks?.first {
-                selectedAddress = [
-                    placemark.name,
-                    placemark.locality,
-                    placemark.country
-                ].compactMap { $0 }.joined(separator: ", ")
-            }
+            userCoordinate = locationManager.locationCoordinate
+            
+            region = MKCoordinateRegion(
+                center: CLLocationCoordinate2D(
+                    latitude: userCoordinate?.latitude ?? 0.0,
+                    longitude: userCoordinate?.longitude ?? 0.0
+                ),
+                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            )
+            
+            selectedAddress = locationManager.address.isEmpty ? "chooseLocationFromMap".tr() : locationManager.address
         }
     }
 }

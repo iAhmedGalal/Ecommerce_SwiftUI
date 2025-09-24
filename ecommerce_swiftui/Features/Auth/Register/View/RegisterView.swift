@@ -162,8 +162,8 @@ struct RegisterView: View {
                 
                 LocationDialogView(
                     selectedCoordinate: $viewModel.selectedCoordinate,
-                    selectedAddress: $viewModel.addressTF,
-                    isPresented: $viewModel.showMap
+                    isPresented: $viewModel.showMap,
+                    selectedAddress: $viewModel.addressTF
                 )
                 .frame(maxWidth: .infinity)
                 .frame(height: 525)

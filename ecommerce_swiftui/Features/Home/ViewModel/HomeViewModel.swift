@@ -329,11 +329,14 @@ class HomeViewModel: ObservableObject {
                 favList.remove(at: index)
             }
         case .search:
+            print("")
             
         case .categories:
-            
+            print("")
+
         case .companies:
-            
+            print("")
+
         }
         
         isFav ? addToFavourite(itemId: itemId) : removeFromFavourits(itemId: itemId)
