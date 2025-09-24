@@ -12,7 +12,7 @@ struct ItemsVerticalView: View {
 
     @ObservedObject var viewModel: HomeViewModel
     
-    var item: ItemsModel
+    @Binding var item: ItemsModel
     var itemType: ItemListType
 
     var body: some View {

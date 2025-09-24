@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct BestSellerView: View {
-    var bestSellerList: [ItemsModel]
     @ObservedObject var viewModel: HomeViewModel
 
     var body: some View {
@@ -16,8 +15,8 @@ struct BestSellerView: View {
         
         ScrollView(.horizontal) {
             HStack{
-                ForEach(bestSellerList) { item in
-                    ItemsView(viewModel: viewModel, item: item, itemType: .bestSeller)
+                ForEach($viewModel.bestSellerList) { $item in
+                    ItemsView(viewModel: viewModel, item: $item, itemType: .bestSeller)
                         .padding(4)
                 }
             }

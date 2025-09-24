@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct NewItemsView: View {
-    var newItemsList: [ItemsModel]
     @ObservedObject var viewModel: HomeViewModel
 
     var body: some View {
@@ -16,8 +15,8 @@ struct NewItemsView: View {
         
         ScrollView(.vertical) {
             VStack{
-                ForEach(newItemsList) { item in
-                    ItemsVerticalView(viewModel: viewModel, item: item, itemType: .newItems)
+                ForEach($viewModel.newItemsList) { $item in
+                    ItemsVerticalView(viewModel: viewModel, item: $item, itemType: .newItems)
                         .padding(4)
                 }
             }

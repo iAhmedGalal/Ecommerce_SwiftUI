@@ -11,7 +11,7 @@ struct ItemsView: View {
     @Environment(Router.self) var router
     @ObservedObject var viewModel: HomeViewModel
     
-    var item: ItemsModel
+    @Binding var item: ItemsModel
     var itemType: ItemListType
 
     var body: some View {

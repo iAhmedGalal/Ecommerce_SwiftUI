@@ -12,6 +12,10 @@ enum ItemListType {
     case bestSeller
     case newItems
     case discounts
+    case favourite
+    case search
+    case categories
+    case companies
 }
 
 class HomeViewModel: ObservableObject {
@@ -320,6 +324,16 @@ class HomeViewModel: ObservableObject {
             if let index = discountsList.firstIndex(where: { $0.id == itemId }) {
                 discountsList[index].fav = isFav
             }
+        case .favourite:
+            if let index = favList.firstIndex(where: { $0.id == itemId }) {
+                favList.remove(at: index)
+            }
+        case .search:
+            
+        case .categories:
+            
+        case .companies:
+            
         }
         
         isFav ? addToFavourite(itemId: itemId) : removeFromFavourits(itemId: itemId)

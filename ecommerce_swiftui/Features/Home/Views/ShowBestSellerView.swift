@@ -22,8 +22,8 @@ struct ShowBestSellerView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(viewModel.bestSellerList) { item in
-                        ItemsView(viewModel: viewModel, item: item, itemType: .bestSeller)
+                    ForEach($viewModel.bestSellerList) { $item in
+                        ItemsView(viewModel: viewModel, item: $item, itemType: .bestSeller)
                             .padding(4)
                             .onAppear {
                                 viewModel.loadMoreBestSellerIfNeeded(currentItem: item)
