@@ -6,22 +6,29 @@
 //
 
 import CoreLocation
+import SwiftUI
 
-class LocationManager: NSObject, ObservableObject {
-    private let manager = CLLocationManager()
+extension CLLocationCoordinate2D: @retroactive Equatable {
+    public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    }
+}
+
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    let manager = CLLocationManager()
     private let geocoder = CLGeocoder()
 
     @Published var address: String = ""
-    @Published var locationCoordinate: CLLocationCoordinate2D? = nil
+    @Published var locationCoordinate: CLLocationCoordinate2D?
 
-    override init() {
-        super.init()
+    func requestLocation() {
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
         manager.requestLocation()
+        manager.startUpdatingLocation()
     }
-    
+ 
     func reverseGeocodeLocation(_ coordinate: CLLocationCoordinate2D) {
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         geocoder.reverseGeocodeLocation(location, preferredLocale: LocalizationManager.shared.currentLocale) {[weak self] placemarks, error in
@@ -36,22 +43,20 @@ class LocationManager: NSObject, ObservableObject {
             }
         }
     }
-}
+    
+    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse || status == .authorizedAlways {
+             manager.startUpdatingLocation()
+         }
+     }
 
-extension LocationManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard !locations.isEmpty else { return }
         guard let location = locations.last else { return }
-
-        locationCoordinate = location.coordinate
-        reverseGeocodeLocation(
-            CLLocationCoordinate2D(
-                latitude: locationCoordinate?.latitude ?? 0.0,
-                longitude: locationCoordinate?.longitude ?? 0.0
-            )
-        )
         
-        manager.stopUpdatingLocation()
+        locationCoordinate = location.coordinate
+        
+//        manager.stopUpdatingLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {

@@ -256,9 +256,6 @@ class HomeViewModel: ObservableObject {
                 
         let request = APIRequest(path: Urls.addFavorite, method: .POST, parameters: params, requiresAuth: true)
         
-        print("jhjhhhhhhhh: ", request.urlRequest)
-        print("jhjhhhhhhhh: ", request.parameters)
-        
         NetworkManager.shared.request(request, responseType: APIResponse<UserModel>.self, retries: 2)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
@@ -271,8 +268,6 @@ class HomeViewModel: ObservableObject {
                     self?.errorMessage = "noData".tr()
                     return
                 }
-                
-                
             }
             .store(in: &cancellables)
     }
@@ -289,9 +284,6 @@ class HomeViewModel: ObservableObject {
                 
         let request = APIRequest(path: Urls.removeFavorite, method: .POST, parameters: params, requiresAuth: true)
         
-        print("jhjhhhhhhhh: ", request.urlRequest)
-        print("jhjhhhhhhhh: ", request.parameters)
-        
         NetworkManager.shared.request(request, responseType: APIResponse<UserModel>.self, retries: 2)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
@@ -304,8 +296,6 @@ class HomeViewModel: ObservableObject {
                     self?.errorMessage = "noData".tr()
                     return
                 }
-                
-                
             }
             .store(in: &cancellables)
     }

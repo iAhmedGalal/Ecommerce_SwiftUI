@@ -16,8 +16,8 @@ struct LocationDialogView: View {
     @Binding var isPresented: Bool
     @Binding var selectedAddress: String
     
-    @ObservedObject private var locationManager = LocationManager()
-    
+    @State var locationManager = LocationManager()
+
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 30.0444, longitude: 31.2357), // Cairo as default
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
@@ -35,55 +35,34 @@ struct LocationDialogView: View {
                         
                         if let coordinate = selectedCoordinate {
                             Marker("", coordinate: coordinate)
+                                .tint(Color(AppColors.darkPrimary))
+                        }
+                        
+                        UserAnnotation()
+                    }
+                    .onTapGesture { position in
+                        if let coordinate = proxy.convert(position, from: .local) {
+                            selectedCoordinate = coordinate
+                            locationManager.reverseGeocodeLocation(coordinate)
+                            
+                            region = MKCoordinateRegion(
+                                center: CLLocationCoordinate2D(
+                                    latitude: coordinate.latitude,
+                                    longitude: coordinate.longitude
+                                ),
+                                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                            )
                         }
                     }
-                    .gesture(
-                        TapGesture().onEnded({ point in
-                            if let mapCoordinate = proxy.convert(, from: .local) {
-                                selectedCoordinate = mapCoordinate
-                                locationManager.reverseGeocodeLocation(mapCoordinate)
-                                
-                                withAnimation {
-                                    region = MKCoordinateRegion(
-                                        center: CLLocationCoordinate2D(
-                                            latitude: selectedCoordinate?.latitude ?? 0.0,
-                                            longitude: selectedCoordinate?.longitude ?? 0.0
-                                        ),
-                                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                                    )
-                                    
-                                    selectedAddress = locationManager.address.isEmpty ? "chooseLocationFromMap".tr() : locationManager.address
-                                }
-                            }
-                        })
-                    )
-                    .onTapGesture {
-                        let tapPoint = value
-
-                    }
-//                    .gesture(
-//                        DragGesture(minimumDistance: 0)
-//                            .onEnded { value in
-//                                let tapPoint = value.location
-//                                if let mapCoordinate = proxy.convert(tapPoint, from: .local) {
-//                                    selectedCoordinate = mapCoordinate
-//                                    locationManager.reverseGeocodeLocation(mapCoordinate)
-//                                    
-//                                    withAnimation {
-//                                        region = MKCoordinateRegion(
-//                                            center: CLLocationCoordinate2D(
-//                                                latitude: selectedCoordinate?.latitude ?? 0.0,
-//                                                longitude: selectedCoordinate?.longitude ?? 0.0
-//                                            ),
-//                                            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-//                                        )
-//                                        
-//                                        selectedAddress = locationManager.address.isEmpty ? "chooseLocationFromMap".tr() : locationManager.address
-//                                    }
-//                                }
-//                            }
-//                    )
                 }
+                .mapControls{
+                    MapUserLocationButton()
+                    MapCompass()
+                    MapPitchToggle()
+                    MapScaleView()
+                }
+                .mapStyle(.hybrid(elevation: .realistic))
+                .tint(.colorAccentLight)
                 .frame(height: 375)
                 .cornerRadius(12, corners: [.topLeft, .topRight])
                 
@@ -103,7 +82,7 @@ struct LocationDialogView: View {
                         .padding()
                 }
             }
-
+            
             Text(selectedAddress)
                 .font(.jfFont(size: 18))
                 .lineLimit(2)
@@ -117,7 +96,28 @@ struct LocationDialogView: View {
             }
             .padding(.top, 8)
         }
+//        .onChange(of: locationManager.locationCoordinate) { oldValue, newValue in
+//            userCoordinate = locationManager.locationCoordinate
+//            
+//            
+//            print("jhklhkhjkhjkhjkhjkqqqqqqq", userCoordinate)
+//            print("jhklhkhjkhjkhjkhjk", locationManager.locationCoordinate)
+//            print("jhklhkh555555555jkhjkhjkhjk", locationManager.manager.location)
+//
+//            
+//            region = MKCoordinateRegion(
+//                center: CLLocationCoordinate2D(
+//                    latitude: userCoordinate?.latitude ?? 0.0,
+//                    longitude: userCoordinate?.longitude ?? 0.0
+//                ),
+//                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+//            )
+//            
+//            selectedAddress = locationManager.address.isEmpty ? "chooseLocationFromMap".tr() : locationManager.address
+//        }
         .onAppear {
+            locationManager.requestLocation()
+            
             userCoordinate = locationManager.locationCoordinate
             
             region = MKCoordinateRegion(
