@@ -40,3 +40,12 @@ extension StringProtocol {
         html2AttributedString?.string ?? ""
     }
 }
+
+extension Binding where Value == String? {
+    func orEmpty() -> Binding<String> {
+        Binding<String>(
+            get: { self.wrappedValue ?? "" },
+            set: { self.wrappedValue = $0 }
+        )
+    }
+}
