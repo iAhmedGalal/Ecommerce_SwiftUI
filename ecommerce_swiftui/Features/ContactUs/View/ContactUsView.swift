@@ -27,7 +27,7 @@ struct ContactUsView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .padding()
                     
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 12) {
                         TitleValueView(
                             title: "Phone".tr(),
                             value: $viewModel.settings.t.orEmpty()
@@ -50,55 +50,76 @@ struct ContactUsView: View {
                     }
                     .padding()
                     
-                    IconTextField(
-                        placeHolder: "Name".tr(),
-                        icon: AppAssets.user,
-                        keyboardType: .namePhonePad,
-                        text: $viewModel.nameTF,
-                        focusedField: _focusedField
-                    )
-                    .padding(.bottom, 8)
-                    
-                    IconTextField(
-                        placeHolder: "Email".tr(),
-                        icon: AppAssets.mail,
-                        keyboardType: .emailAddress,
-                        text: $viewModel.mailTF,
-                        focusedField: _focusedField
-                    )
-                    .padding(.bottom, 8)
-                    
-                    IconTextField(
-                        placeHolder: "Phone".tr(),
-                        icon: AppAssets.phone,
-                        keyboardType: .asciiCapableNumberPad,
-                        text: $viewModel.phoneTF,
-                        focusedField: _focusedField
-                    )
-                    .padding(.bottom, 8)
-                    
-                    IconTextField(
-                        placeHolder: "msgTitle".tr(),
-                        icon: "",
-                        text: $viewModel.titleTF,
-                        focusedField: _focusedField
-                    )
-                    .padding(.bottom, 8)
-                    
-                    TextEditor(text: $viewModel.messageTF)
-                        .font(.jfFont(size: 18))
-                        .padding(12)
-                        .background(Color.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 1)
-                        .padding(.horizontal, 16)
-
-                    ColoredButton(
-                        title: "send".tr(),
-                        showArrow: false, isGrediant: true
-                    ) {
-                        viewModel.sendMessage()
+                    HStack {
+                        SocialMediaItemView(
+                            icon: AppAssets.whatsapp,
+                            link: viewModel.social.first?.phone ?? "",
+                            openWhatsapp: true
+                        )
+                        
+                        SocialMediaItemView(
+                            icon: AppAssets.facebook,
+                            link: viewModel.social.first?.facebook ?? ""
+                        )
+                        
+                        SocialMediaItemView(
+                            icon: AppAssets.instagram,
+                            link: viewModel.social.first?.instagram ?? ""
+                        )
                     }
+             
+                    VStack {
+                        IconTextField(
+                            placeHolder: "Name".tr(),
+                            icon: AppAssets.user,
+                            keyboardType: .namePhonePad,
+                            text: $viewModel.nameTF,
+                            focusedField: _focusedField
+                        )
+                        .padding(.bottom, 8)
+                        
+                        IconTextField(
+                            placeHolder: "Email".tr(),
+                            icon: AppAssets.mail,
+                            keyboardType: .emailAddress,
+                            text: $viewModel.mailTF,
+                            focusedField: _focusedField
+                        )
+                        .padding(.bottom, 8)
+                        
+                        IconTextField(
+                            placeHolder: "Phone".tr(),
+                            icon: AppAssets.phone,
+                            keyboardType: .asciiCapableNumberPad,
+                            text: $viewModel.phoneTF,
+                            focusedField: _focusedField
+                        )
+                        .padding(.bottom, 8)
+                        
+                        IconTextField(
+                            placeHolder: "msgTitle".tr(),
+                            icon: "",
+                            text: $viewModel.titleTF,
+                            focusedField: _focusedField
+                        )
+                        .padding(.bottom, 8)
+                        
+                        TextEditor(text: $viewModel.messageTF)
+                            .font(.jfFont(size: 18))
+                            .padding(12)
+                            .background(Color.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 1)
+                            .padding(.horizontal, 16)
+
+                        ColoredButton(
+                            title: "send".tr(),
+                            showArrow: false, isGrediant: true
+                        ) {
+                            viewModel.sendMessage()
+                        }
+                    }
+                    .padding()
                 }
             }
             .onAppear {
@@ -121,21 +142,4 @@ struct ContactUsView: View {
 
 #Preview {
     ContactUsView()
-}
-
-struct TitleValueView: View {
-    var title: String
-    @Binding var value: String
-    
-    var body: some View {
-        HStack {
-            Text(title + ":")
-                .font(.jfFontBold(size: 16))
-            
-            Text(value)
-                .font(.jfFont(size: 16))
-            
-            Spacer()
-        }
-    }
 }

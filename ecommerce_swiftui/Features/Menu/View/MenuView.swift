@@ -34,6 +34,12 @@ struct MenuView: View {
                 )
                 
                 MenuItemView(
+                    title: "categories".tr(),
+                    image: AppAssets.menuOffers,
+                    page: .categories
+                )
+                
+                MenuItemView(
                     title: "companies".tr(),
                     image: AppAssets.menuOffers,
                     page: .companies

@@ -35,10 +35,7 @@ struct FavouritesView: View {
             }
             
             if viewModel.isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-                    .padding(.vertical)
+                LoadingView()
             }
             
             if viewModel.errorMessage != nil {

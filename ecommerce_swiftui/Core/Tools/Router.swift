@@ -13,6 +13,8 @@ enum AppRoutes: Hashable {
     case splash
     case main
     case login
+    case forgetPassword
+    case resetPassword(String)
     case register
     case itemDetailds(Int)
     case bestSeller
@@ -67,6 +69,12 @@ struct RouterViewModifier: ViewModifier {
                 
             case .login:
                 LoginView()
+                
+            case .forgetPassword:
+                ForgetPasswordView()
+                
+            case .resetPassword(let email):
+                ResetPasswordView(email: email)
                 
             case .register:
                 RegisterView()

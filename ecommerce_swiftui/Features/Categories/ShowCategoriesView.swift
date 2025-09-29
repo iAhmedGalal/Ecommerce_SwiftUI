@@ -7,9 +7,47 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct ShowCategoriesView: View {
+    @StateObject private var viewModel = HomeViewModel()
+
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Color(AppColors.greyWhite)
+                .ignoresSafeArea()
+            
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 8) {
+                    ForEach(viewModel.categoriesList) { item in
+                        ImageTextView(
+                            image: item.image ?? "",
+                            name: item.name ?? "",
+                            addFrame: true
+                        )
+                    }
+                }
+                .padding(.top, 8)
+            }
+            .customNavigation(title: "categories".tr(), showBackBtn: true)
+            .onAppear {
+                viewModel.fetchCategories()
+            }
+            
+            if viewModel.isLoading {
+                LoadingView()
+            }
+            
+            if viewModel.errorMessage != nil {
+                NoItemsView()
+            }
+        }
     }
 }
 

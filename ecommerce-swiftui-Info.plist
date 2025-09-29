@@ -8,6 +8,14 @@
 	<string>Please allow location permission to get your current location for delivery</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Please allow location permission to get your current location for delivery</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>whatsapp</string>
+		<string>telprompt</string>
+		<string>tel</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
