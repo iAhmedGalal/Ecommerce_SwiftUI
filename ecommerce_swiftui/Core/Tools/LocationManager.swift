@@ -8,25 +8,29 @@
 import CoreLocation
 import SwiftUI
 
-extension CLLocationCoordinate2D: @retroactive Equatable {
-    public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
-        lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
-    }
-}
-
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-    let manager = CLLocationManager()
+    static var shared = LocationManager()
+    var manager = CLLocationManager()
     private let geocoder = CLGeocoder()
 
     @Published var address: String = ""
     @Published var locationCoordinate: CLLocationCoordinate2D?
-
-    func requestLocation() {
+    
+    override init() {
+        super.init()
+        
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
         manager.requestLocation()
+    }
+
+    func startLocation() {
         manager.startUpdatingLocation()
+    }
+    
+    func stopLocation() {
+        manager.stopUpdatingLocation()
     }
  
     func reverseGeocodeLocation(_ coordinate: CLLocationCoordinate2D) {

@@ -96,29 +96,10 @@ struct LocationDialogView: View {
             }
             .padding(.top, 8)
         }
-//        .onChange(of: locationManager.locationCoordinate) { oldValue, newValue in
-//            userCoordinate = locationManager.locationCoordinate
-//            
-//            
-//            print("jhklhkhjkhjkhjkhjkqqqqqqq", userCoordinate)
-//            print("jhklhkhjkhjkhjkhjk", locationManager.locationCoordinate)
-//            print("jhklhkh555555555jkhjkhjkhjk", locationManager.manager.location)
-//
-//            
-//            region = MKCoordinateRegion(
-//                center: CLLocationCoordinate2D(
-//                    latitude: userCoordinate?.latitude ?? 0.0,
-//                    longitude: userCoordinate?.longitude ?? 0.0
-//                ),
-//                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-//            )
-//            
-//            selectedAddress = locationManager.address.isEmpty ? "chooseLocationFromMap".tr() : locationManager.address
-//        }
         .onAppear {
-            locationManager.requestLocation()
+            LocationManager.shared.startLocation()
             
-            userCoordinate = locationManager.locationCoordinate
+            userCoordinate = LocationManager.shared.locationCoordinate
             
             region = MKCoordinateRegion(
                 center: CLLocationCoordinate2D(
@@ -127,6 +108,8 @@ struct LocationDialogView: View {
                 ),
                 span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
             )
+            
+//            locationManager.reverseGeocodeLocation(LocationManager.shared.locationCoordinate!)
             
             selectedAddress = locationManager.address.isEmpty ? "chooseLocationFromMap".tr() : locationManager.address
         }
