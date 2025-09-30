@@ -8,6 +8,7 @@
 struct APIResponse<T: Decodable>: Decodable {
     var status: Bool?
     var message: String?
+    var msg: String?
     var maintenance : Int?
     var maintenance_message : String?
     var data: T?
@@ -15,7 +16,7 @@ struct APIResponse<T: Decodable>: Decodable {
     var item: T?
     
     enum CodingKeys: String, CodingKey {
-        case status = "status", message = "message"
+        case status = "status", message = "message", msg = "msg"
         case maintenance = "maintenance", maintenance_message = "maintenance_message"
         case data = "data", items = "items", item = "item"
     }

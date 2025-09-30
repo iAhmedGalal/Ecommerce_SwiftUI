@@ -76,7 +76,7 @@ struct LoginView: View {
                 .padding(.top, -20)
                 
                 Button {
-                    
+                    router.push(.forgetPassword)
                 } label: {
                     HStack(spacing: 4) {
                         Text("Forget Password".tr())

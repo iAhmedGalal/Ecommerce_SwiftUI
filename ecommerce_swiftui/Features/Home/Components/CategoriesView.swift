@@ -24,7 +24,8 @@ struct CategoriesView: View {
                 ForEach(categoriesList) { category in
                     ImageTextView(
                         image: category.image ?? "",
-                        name: category.name ?? ""
+                        name: category.name ?? "",
+                        addFrame: true
                     )
                 }
             }

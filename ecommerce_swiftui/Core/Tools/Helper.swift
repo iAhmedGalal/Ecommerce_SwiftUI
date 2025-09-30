@@ -22,4 +22,79 @@ class Helper {
         let phoneTest = NSPredicate(format:"SELF MATCHES %@", phoneRegex)
         return phoneTest.evaluate(with: phone)
     }
+    
+    static func openScheme(scheme: String) {
+        if let url = URL(string: scheme) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    static func openWhatsapp(number: String){
+        let trimmedNumber = number.replacingOccurrences(of: " ", with: "")
+        print("mobileString trimmed:"+trimmedNumber)
+
+        var whatsappLink: String = ""
+        
+        if trimmedNumber.prefix(2) == "01" {
+            whatsappLink = "https://api.whatsapp.com/send?phone=002\(trimmedNumber)"
+        }else {
+            whatsappLink = "https://api.whatsapp.com/send?phone=\(trimmedNumber)"
+        }
+        
+        print("urlWhatsapp", whatsappLink)
+        
+        if let urlString = whatsappLink.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed){
+            if let whatsappURL = URL(string: urlString) {
+                if UIApplication.shared.canOpenURL(whatsappURL){
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(whatsappURL, options: [:], completionHandler: nil)
+                    } else {
+                        UIApplication.shared.openURL(whatsappURL)
+                    }
+                }else {
+                    print("Install Whatsapp")
+                }
+            }
+        }
+    }
+    
+    static func callNumber(number:String) {
+        if let phoneCallURL = URL(string: "telprompt://"+number) {
+            let application:UIApplication = UIApplication.shared
+            if (application.canOpenURL(phoneCallURL)) {
+                if #available(iOS 10.0, *) {
+                    application.open(phoneCallURL, options: [:], completionHandler: nil)
+                } else {
+                    // Fallback on earlier versions
+                    application.openURL(phoneCallURL as URL)
+                }
+            }
+        }
+    }
+   
+    static func shareItem(name: String, itemImage: String, shareUrl: String, vc: UIViewController) {
+        let name = name
+        let image = UIImage(named: "logo")
+        
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 48, height: 48))
+        
+        imageView.image = image
+        
+//        if itemImage != "" {
+//            imageView.sd_setImage(with: URL(string: itemImage), placeholderImage: image)
+//        }
+                
+        let linkString = shareUrl
+        let link = NSURL(string: linkString)
+        let textShare = [name, linkString, imageView.image as Any, link as Any] as [Any]
+        let alert = UIActivityViewController(activityItems: textShare , applicationActivities: nil)
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = vc.view //to set the source of your alert
+            popoverController.sourceRect = CGRect(x: vc.view.bounds.midX, y: vc.view.bounds.maxY, width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+        
+        vc.present(alert, animated: true, completion: nil)
+    }
 }

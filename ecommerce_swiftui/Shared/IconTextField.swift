@@ -38,17 +38,17 @@ struct IconTextField: View {
                     if showPassword {
                         TextField(placeHolder, text: $text)
                             .font(.jfFont(size: 18))
-                            .padding(.top, 8)
+                            .padding(.top, title == "" ? 0 : 8)
                             
                     } else {
                         SecureField(placeHolder, text: $text)
                             .font(.jfFont(size: 18))
-                            .padding(.top, 8)
+                            .padding(.top, title == "" ? 0 : 8)
                     }
                 } else {
                     TextField(placeHolder, text: $text)
                         .font(.jfFont(size: 18))
-                        .padding(.top, 8)
+                        .padding(.top, title == "" ? 0 : 8)
                         .keyboardType(keyboardType)
                         .id(placeHolder)
                         .focused($focusedField, equals: placeHolder)
