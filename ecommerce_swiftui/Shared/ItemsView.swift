@@ -10,7 +10,8 @@ import SwiftUI
 struct ItemsView: View {
     @Environment(Router.self) var router
     @ObservedObject var viewModel: HomeViewModel
-    
+    @ObservedObject private var cartViewModel = CartViewModel(context: PersistenceController.shared.container.viewContext)
+
     @Binding var item: ItemsModel
     var itemType: ItemListType
 
@@ -69,7 +70,7 @@ struct ItemsView: View {
                 Spacer()
                 
                 Button {
-                    
+                    cartViewModel.addItem(item: item, selectedQty: 3, unitIndex: 0)
                 }
                 label: {
                   Image(AppAssets.cart3)

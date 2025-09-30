@@ -9,7 +9,7 @@ struct UnitsModel: Decodable {
     @SafeDecode var unit_id : Int?
     @SafeDecode var unit_value : Int?
     @SafeDecode var unit_name : String?
-    @SafeDecode var quantity : Int??
+    @SafeDecode var quantity : Int?
     @SafeDecode var final_max_quantity : Int?
     @SafeDecode var sale_price : String?
     @SafeDecode var new_price : String?

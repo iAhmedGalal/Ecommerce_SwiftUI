@@ -57,7 +57,7 @@ struct HomeNavView: View {
             .toolbar {
                 ToolbarItem {
                     Button {
-                        
+                        router.push(.cart)
                     } label: {
                         ZStack(alignment: .topLeading) {
                             Image(AppAssets.cart)
