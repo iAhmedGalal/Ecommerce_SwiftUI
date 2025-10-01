@@ -6,71 +6,59 @@
 //
 
 import SwiftUI
-import CoreData
 
 class CartViewModel: ObservableObject {
-    @Published var cartItems: [CartEntity] = []
+    @Published var cartItems: [CartModel] = []
     
-    private let context: NSManagedObjectContext
+    private let cartKey = "offline_cart"
     
-    init(context: NSManagedObjectContext) {
-        self.context = context
-        fetchCart()
-    }
-    
-    // جلب البيانات
-    func fetchCart() {
-        let request: NSFetchRequest<CartEntity> = CartEntity.fetchRequest()
-        do {
-            cartItems = try context.fetch(request)
-        } catch {
-            print("❌ Error fetching cart items: \(error)")
-        }
+    init() {
+        loadCart()
     }
     
     // إضافة صنف
     func addItem(item: ItemsModel, selectedQty: Int, unitIndex: Int) {
         let selectedUnitData = item.unitsArr?[unitIndex]
         
-        let newItem = CartEntity(context: context)
-        newItem.id = Int64(item.id ?? 0)
+        var newItem = CartModel()
+        
+        newItem.id = item.id ?? 0
         newItem.name = item.itemName ?? ""
         newItem.notes = item.name ?? ""
         newItem.image = item.img ?? ""
         newItem.notes = item.notes ?? ""
         newItem.isMainItem = false
-        newItem.vatState = Int64(item.vatState ?? 0)
-        newItem.offerId = Int64(item.offerId ?? 0)
-        newItem.hasOffer = Int64(item.hasOffer ?? 0)
-        newItem.sizeId = Int64(item.sizeId ?? 0)
-        newItem.colorId = Int64(item.colorId ?? 0)
+        newItem.vatState = item.vatState ?? 0
+        newItem.offerId = item.offerId ?? 0
+        newItem.hasOffer = item.hasOffer ?? 0
+        newItem.sizeId = item.sizeId ?? 0
+        newItem.colorId = item.colorId ?? 0
         newItem.cartId = "\(item.id ?? 0)-\(selectedUnitData?.unit_id ?? 0)"
-        newItem.selectedQty = Int64(selectedQty)
-        newItem.unitId = Int64(selectedUnitData?.unit_id ?? 0)
+        newItem.selectedQuantity = selectedQty
+        newItem.unitId = selectedUnitData?.unit_id ?? 0
         newItem.unitName = selectedUnitData?.unit_name ?? ""
-        newItem.quantity = Int64(selectedUnitData?.quantity ?? 0)
-        newItem.maxQty = Int64(selectedUnitData?.final_max_quantity ?? 0)
+        newItem.quantity = selectedUnitData?.quantity ?? 0
+        newItem.maxQuantity = selectedUnitData?.final_max_quantity ?? 0
         newItem.newPrice = selectedUnitData?.new_price ?? ""
         newItem.salePrice = selectedUnitData?.sale_price ?? ""
         newItem.discount = selectedUnitData?.discount ?? ""
-        newItem.discountType = Int64(selectedUnitData?.discount_type ?? 0)
-        newItem.hasDiscount = Int64(selectedUnitData?.has_discount ?? 0)
-        newItem.remainDiscountQuantity = Int64(selectedUnitData?.remain_discount_quantity ?? 0)
-
+        newItem.discountType = selectedUnitData?.discount_type ?? 0
+        newItem.hasDiscount = selectedUnitData?.has_discount ?? 0
+        newItem.remainDiscountQuantity = selectedUnitData?.remain_discount_quantity ?? 0
+        
         cartItems.append(newItem)
-        saveContext()
+        saveCart()
     }
     
     // تعديل الكمية
-    func updateQuantity(item: CartEntity, quantity: Int) {
-        item.selectedQty = Int64(max(1, quantity))
-        saveContext()
+    func updateQuantity(productId: Int, quantity: Int) {
+        guard let index = cartItems.firstIndex(where: { $0.id == productId }) else { return }
+        cartItems[index].selectedQuantity = max(1, quantity)
     }
     
     // حذف صنف
-    func removeItem(item: CartEntity) {
-        context.delete(item)
-        saveContext()
+    func removeItem(productId: Int) {
+        cartItems.removeAll { $0.id == productId }
     }
     
     // التحقق من وجود صنف
@@ -80,16 +68,20 @@ class CartViewModel: ObservableObject {
     
     // إجمالي
     func totalItems() -> Int {
-        cartItems.reduce(0) { $0 + Int($1.selectedQty) }
+        cartItems.reduce(0) { $0 + ($1.selectedQuantity ?? 0) }
     }
     
-    // حفظ
-    private func saveContext() {
-        do {
-            try context.save()
-            fetchCart()
-        } catch {
-            print("❌ Error saving context: \(error)")
+    // MARK: - Persistence
+    private func saveCart() {
+        if let encoded = try? JSONEncoder().encode(cartItems) {
+            UserDefaults.standard.set(encoded, forKey: cartKey)
+        }
+    }
+    
+    private func loadCart() {
+        if let data = UserDefaults.standard.data(forKey: cartKey),
+           let decoded = try? JSONDecoder().decode([CartModel].self, from: data) {
+            self.cartItems = decoded
         }
     }
 }

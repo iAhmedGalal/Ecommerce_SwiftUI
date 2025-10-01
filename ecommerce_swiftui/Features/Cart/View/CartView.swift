@@ -8,25 +8,24 @@ import SwiftUI
 import CoreData
 
 struct CartView: View {
-    @Environment(\.managedObjectContext) private var context
-    @StateObject private var viewModel: CartViewModel
-    
-    init(context: NSManagedObjectContext) {
-        _viewModel = StateObject(wrappedValue: CartViewModel(context: context))
-    }
+    @StateObject private var viewModel = CartViewModel()
     
     var body: some View {
-        NavigationView {
+        ZStack {
+            Color(AppColors.greyWhite)
+                .ignoresSafeArea()
+            
             VStack {
                 List {
-                    ForEach(viewModel.cartItems, id: \.self) { item in
+                    ForEach($viewModel.cartItems) { $item in
                         HStack {
                             Text(item.name ?? "")
+                                .font(.jfFont(size: 18))
                             Spacer()
-                            Stepper("\(item.quantity)", value: Binding(
-                                get: { Int(item.quantity) },
+                            Stepper("\(item.selectedQuantity ?? 0)", value: Binding(
+                                get: { Int(item.selectedQuantity ?? 0) },
                                 set: { newValue in
-                                    viewModel.updateQuantity(item: item, quantity: newValue)
+                                    viewModel.updateQuantity(productId: item.id ?? 0, quantity: newValue)
                                 }
                             ), in: 1...100)
                         }
@@ -34,7 +33,7 @@ struct CartView: View {
                     .onDelete { indexSet in
                         for index in indexSet {
                             let item = viewModel.cartItems[index]
-                            viewModel.removeItem(item: item)
+                            viewModel.removeItem(productId: item.id ?? 0)
                         }
                     }
                 }
@@ -42,13 +41,8 @@ struct CartView: View {
                 Text("إجمالي الكمية: \(viewModel.totalItems())")
                     .font(.headline)
                     .padding()
-                
-                Button("إضافة منتج تجريبي") {
-//                    viewModel.addItem(productId: Int.random(in: 1...100), name: "منتج جديد")
-                }
-                .padding()
             }
-            .navigationTitle("السلة (CoreData)")
+            .customNavigation(title: "cart".tr(), showBackBtn: true)
         }
     }
 }
