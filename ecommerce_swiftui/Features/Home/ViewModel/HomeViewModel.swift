@@ -36,6 +36,8 @@ class HomeViewModel: ObservableObject {
     @Published var bestSellerPage = 1
     @Published var bestSellerLastPage = 1
     
+    @Published var showCartDialog = false
+    
     private var cancellables = Set<AnyCancellable>()
     
     func fetchSlider() {

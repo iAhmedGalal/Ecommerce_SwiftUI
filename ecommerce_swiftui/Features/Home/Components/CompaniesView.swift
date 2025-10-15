@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CompaniesView: View {
     var companisList: [CompaniesModel]
-    
+    @Environment(Router.self) var router
+
     var body: some View {
         HomeDividerView(title: "companies".tr(), showMore: false)
 
@@ -21,6 +22,9 @@ struct CompaniesView: View {
                         name: item.name ?? "",
                         addFrame: true
                     )
+                    .onTapGesture {
+                        router.push(.companyItems(item.id ?? 0))
+                    }
                 
                 }
             }

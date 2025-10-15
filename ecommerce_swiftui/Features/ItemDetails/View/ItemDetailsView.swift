@@ -11,6 +11,7 @@ struct ItemDetailsView: View {
     @State var itemId: Int
     
     @StateObject private var viewModel = ItemDetailsViewModel()
+    @ObservedObject private var cartViewModel = CartViewModel()
 
     var body: some View {
         ZStack {
@@ -20,7 +21,7 @@ struct ItemDetailsView: View {
             ScrollView {
                 VStack {
                     ZStack(alignment: .topLeading) {
-                        CachedAsyncImageView(url: viewModel.item.img ?? "")
+                        AsyncImageView(url: viewModel.item.img ?? "")
                             .frame(maxWidth: .infinity)
                             .frame(height: 300)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -57,6 +58,15 @@ struct ItemDetailsView: View {
                     Text(viewModel.item.itemName ?? "")
                         .font(.jfFontBold(size: 20))
                         .lineLimit(2)
+                        .padding(.top, 16)
+                    
+                    Text(viewModel.itemDetails)
+                        .font(.jfFont(size: 18))
+                        .padding(12)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 1)
+                        .padding(.vertical, 16)
                     
                     HStack(alignment: .bottom) {
                         VStack(alignment: .leading) {
@@ -75,22 +85,57 @@ struct ItemDetailsView: View {
                         .padding(.horizontal, 8)
                         
                         Spacer()
-                        
-                        Button {
-                            
-                        }
-                        label: {
-                          Image(AppAssets.cart3)
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                        }
-                        .padding(12)
-                        .background(Color(AppColors.grey))
-                        .cornerRadius(8, corners: [.topLeft, .bottomRight])
-
                     }
+                    
+                    Button {
+                        let isInCart = cartViewModel.containsItem(productId: viewModel.item.id ?? 0, unitId: viewModel.item.unitsArr?.first?.unit_id ?? 0)
+                        
+                        if (isInCart) {
+                            print("productId:", viewModel.item.id ?? 0, "unitId:", viewModel.item.unitsArr?.first?.unit_id ?? 0)
+                            return
+                        }
+                        
+                        viewModel.showCartDialog = true
+                    }
+                    label: {
+                        HStack(alignment: .center) {
+                            Image(AppAssets.cart3)
+                                  .resizable()
+                                  .frame(width: 30, height: 30)
+                            
+                            Text("addToCart".tr())
+                                .font(.jfFont(size: 18))
+                                .foregroundStyle(.white)
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .background(Color(AppColors.darkPrimary))
+                    .cornerRadius(8)
+                    .padding(.vertical)
                 }
                 .padding()
+            }
+            
+            if viewModel.showCartDialog {
+                Color.black.opacity(0.3)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        viewModel.showCartDialog = false
+                    }
+                
+                AddToCartDialogView(
+                    item: $viewModel.item,
+                    isPresented: $viewModel.showCartDialog,
+                    viewModel: cartViewModel
+                )
+                .frame(maxWidth: .infinity)
+                .frame(height: 525)
+                .background(Color.white)
+                .cornerRadius(12)
+                .shadow(radius: 10)
+                .padding()
+                .transition(.scale)
             }
         }
         .customNavigation(title: viewModel.item.itemName ?? "", showBackBtn: true)

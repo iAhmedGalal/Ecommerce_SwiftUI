@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ShowCompaniesView: View {
     @StateObject private var viewModel = HomeViewModel()
+    @Environment(Router.self) var router
 
     let columns = [
         GridItem(.flexible()),
@@ -29,6 +30,9 @@ struct ShowCompaniesView: View {
                             name: item.name ?? "",
                             addFrame: true
                         )
+                        .onTapGesture {
+                            router.push(.companyItems(item.id ?? 0))
+                        }
                     }
                 }
                 .padding(.top, 8)

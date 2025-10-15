@@ -77,7 +77,7 @@ struct ItemsView: View {
                         return
                     }
                     
-                    cartViewModel.addItem(item: item, selectedQty: 3, unitIndex: 0)
+                    
                 }
                 label: {
                   Image(AppAssets.cart3)
@@ -90,6 +90,7 @@ struct ItemsView: View {
 
             }
         }
+        .toastView(toast: $cartViewModel.toast)
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: Color.black.opacity(0.25), radius: 4, x: 0, y: 1)

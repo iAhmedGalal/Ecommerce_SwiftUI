@@ -83,9 +83,9 @@ struct HomeNavView: View {
                 
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        
+                        router.push(.search)
                     } label: {
-                        Image(AppAssets.moreGrey)
+                        Image(systemName: "magnifyingglass")
                             .resizable()
                             .frame(width: 20, height: 20)
                             .foregroundColor(.black)

@@ -28,7 +28,9 @@ enum AppRoutes: Hashable {
     case terms
     case contactUs
     case cart
-    
+    case search
+    case catItems(Int)
+    case companyItems(Int)
 }
 
 @Observable
@@ -83,6 +85,12 @@ struct RouterViewModifier: ViewModifier {
             case .itemDetailds(let itemId):
                 ItemDetailsView(itemId: itemId)
                 
+            case .catItems(let catId):
+                CategoryItemsView(categoryId: catId)
+                
+            case .companyItems(let companyId):
+                CompanyItemsView(companyId: companyId)
+                
             case .bestSeller:
                 ShowBestSellerView()
                 
@@ -112,6 +120,9 @@ struct RouterViewModifier: ViewModifier {
                 
             case .contactUs:
                 ContactUsView()
+                
+            case .search:
+                SearchView()
                 
             case .cart:
                 CartView()

@@ -9,7 +9,9 @@ import SwiftUI
 
 class CartViewModel: ObservableObject {
     @Published var cartItems: [CartModel] = []
-    
+    @Published var toast: Toast?
+    @Published var notesTF: String = ""
+
     private let cartKey = "offline_cart"
     
     init() {

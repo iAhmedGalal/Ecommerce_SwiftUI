@@ -11,6 +11,7 @@ import SwiftUI
 
 struct ShowCategoriesView: View {
     @StateObject private var viewModel = HomeViewModel()
+    @Environment(Router.self) var router
 
     let columns = [
         GridItem(.flexible()),
@@ -31,6 +32,9 @@ struct ShowCategoriesView: View {
                             name: item.name ?? "",
                             addFrame: true
                         )
+                        .onTapGesture {
+                            router.push(.catItems(item.id ?? 0))
+                        }
                     }
                 }
                 .padding(.top, 8)

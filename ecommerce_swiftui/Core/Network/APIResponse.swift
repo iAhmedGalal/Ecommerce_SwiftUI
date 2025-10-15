@@ -23,9 +23,9 @@ struct APIResponse<T: Decodable>: Decodable {
 }
 
 struct PaginationResponse<T: Decodable>: Decodable {
-    @SafeDecode var total : Int?
-    @SafeDecode var current_page : Int?
-    @SafeDecode var last_page : Int?
+    var total : Int?
+    var current_page : Int?
+    var last_page : Int?
     @SafeDecode var data: [T]?
     var pagination : PaginationModel?
 
@@ -38,7 +38,7 @@ struct PaginationResponse<T: Decodable>: Decodable {
 }
 
 struct PaginationModel: Decodable {
-    @SafeDecode var total : Int?
+    var total : Int?
     @SafeDecode var current_page : Int?
     @SafeDecode var last_page : Int?
     

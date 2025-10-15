@@ -57,90 +57,100 @@ struct CartItemView: View {
     @Binding var item: CartModel
     
     var body: some View {
-        HStack {
-            ZStack(alignment: .topLeading) {
-                CachedAsyncImageView(url: item.image ?? "")
-                    .frame(width: 100, height: 100)
-                    .cornerRadius(8)
-                
-                HStack(alignment: .top) {
-                    if item.hasDiscount == 1 {
-                        DiscountTagComponent(
-                            discount: item.discount ?? "",
-                            discounType: item.discountType ?? 0
-                        )
-                    }
-                }
-                .padding(10)
-            }
-            
-            VStack(alignment: .leading, spacing: 16) {
-                Text(item.name ?? "")
-                    .font(.jfFont(size: 18))
-                
-                
-                HStack {
-                    if item.hasDiscount == 1 {
-                        Text(item.salePrice ?? "")
+        ZStack(alignment: .top) {
+            HStack {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text(item.name ?? "")
+                        .font(.jfFont(size: 18))
+                    
+                    
+                    HStack {
+                        if item.hasDiscount == 1 {
+                            Text(item.salePrice ?? "")
+                                .font(.jfFont(size: 16))
+                                .strikethrough()
+                        }
+                        
+                        Text(item.newPrice ?? "")
                             .font(.jfFont(size: 16))
-                            .strikethrough()
                     }
                     
-                    Text(item.newPrice ?? "")
-                        .font(.jfFont(size: 16))
-                }
-                
-                HStack {
                     HStack {
-                        Button {
-                            let newValue = Int(item.selectedQuantity ?? 0) + 1
-                            viewModel.updateQuantity(cartId: item.cartId ?? "", quantity: newValue)
-                        } label: {
-                            Image(systemName: "plus")
-                                .foregroundStyle(Color.black)
+                        HStack {
+                            Button {
+                                let newValue = Int(item.selectedQuantity ?? 0) + 1
+                                viewModel.updateQuantity(cartId: item.cartId ?? "", quantity: newValue)
+                            } label: {
+                                Image(systemName: "plus")
+                                    .foregroundStyle(Color.black)
+                            }
+                            
+                            Text("\(item.selectedQuantity ?? 0)")
+                                .font(.jfFont(size: 16))
+                                .padding(.horizontal, 8)
+                            
+                            Button {
+                                let newValue = Int(item.selectedQuantity ?? 0) - 1
+                                viewModel.updateQuantity(cartId: item.cartId ?? "", quantity: newValue)
+                            } label: {
+                                Image(systemName: "minus")
+                                    .foregroundStyle(Color.black)
+                            }
                         }
-                        
-                        Text("\(item.selectedQuantity ?? 0)")
-                            .font(.jfFont(size: 16))
-                            .padding(.horizontal, 8)
-                        
-                        Button {
-                            let newValue = Int(item.selectedQuantity ?? 0) - 1
-                            viewModel.updateQuantity(cartId: item.cartId ?? "", quantity: newValue)
-                        } label: {
-                            Image(systemName: "minus")
-                                .foregroundStyle(Color.black)
-                        }
-                    }
-                    .padding()
-                    .background(AppColors.greyWhite)
-                    .clipShape(RoundedRectangle(cornerRadius: 32))
-
-                   
-                    Text(item.unitName ?? "")
-                        .font(.jfFont(size: 16))
                         .padding()
                         .background(AppColors.greyWhite)
                         .clipShape(RoundedRectangle(cornerRadius: 32))
+
+                       
+                        Text(item.unitName ?? "")
+                            .font(.jfFont(size: 16))
+                            .padding()
+                            .background(AppColors.greyWhite)
+                            .clipShape(RoundedRectangle(cornerRadius: 32))
+                    }
+                }
+                
+                
+                Spacer()
+            }
+            .offset(x: 160)
+            .padding(8)
+            .background(AppColors.white)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .padding(.horizontal, 16)
+            .offset(y: 18)
+            
+            HStack(alignment: .top) {
+                ZStack(alignment: .topLeading) {
+                    CachedAsyncImageView(url: item.image ?? "")
+                        .frame(width: 150, height: 150)
+                        .cornerRadius(8)
+                    
+                    HStack(alignment: .top) {
+                        if item.hasDiscount == 1 {
+                            DiscountTagComponent(
+                                discount: item.discount ?? "",
+                                discounType: item.discountType ?? 0
+                            )
+                        }
+                    }
+                    .padding(10)
+                }
+                
+                Spacer()
+                
+                Button {
+                    viewModel.removeItem(cartId: item.cartId ?? "")
+                } label: {
+                    Image(systemName: "trash")
+                        .foregroundStyle(Color.white)
+                        .padding(6)
+                        .background(AppColors.darkPrimary)
+                        .clipShape(RoundedRectangle(cornerRadius: 32))
                 }
             }
-            
-            Spacer()
-            
-            Button {
-                viewModel.removeItem(cartId: item.cartId ?? "")
-            } label: {
-                Image(systemName: "trash")
-                    .foregroundStyle(Color.white)
-                    .padding(6)
-                    .background(AppColors.darkPrimary)
-                    .clipShape(RoundedRectangle(cornerRadius: 32))
-            }
-           
+            .padding(.horizontal, 24)
         }
-        .padding(8)
-        .background(AppColors.white)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .padding(.horizontal, 16)
+        .frame(height: 150)
     }
 }

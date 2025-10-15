@@ -5,7 +5,9 @@
 //  Created by Ahmed Galal on 13/09/2025.
 //
 
-struct UnitsModel: Decodable {
+struct UnitsModel: Decodable, Identifiable {
+    var id: Int?
+    
     @SafeDecode var unit_id : Int?
     @SafeDecode var unit_value : Int?
     @SafeDecode var unit_name : String?
@@ -37,4 +39,5 @@ struct UnitsModel: Decodable {
         case discount_type = "discount_type"
         case remain_discount_quantity = "remain_discount_quantity"
     }
+
 }

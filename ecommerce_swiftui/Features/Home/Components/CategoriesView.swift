@@ -9,7 +9,8 @@ import SwiftUI
 
 struct CategoriesView: View {
     var categoriesList: [CategoriesModel]
-    
+    @Environment(Router.self) var router
+
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -27,6 +28,9 @@ struct CategoriesView: View {
                         name: category.name ?? "",
                         addFrame: true
                     )
+                    .onTapGesture {
+                        router.push(.catItems(category.id ?? 0))
+                    }
                 }
             }
         }

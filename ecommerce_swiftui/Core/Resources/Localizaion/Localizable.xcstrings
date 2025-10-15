@@ -100,6 +100,23 @@
         }
       }
     },
+    "addToCart" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اضف للسلة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add To Cart"
+          }
+        }
+      }
+    },
     "back" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -198,6 +215,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choose Location From Map"
+          }
+        }
+      }
+    },
+    "chooseUnit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اختر الوحدة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose Unit"
           }
         }
       }
@@ -484,6 +518,23 @@
         }
       }
     },
+    "enterYourNotes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ادخل ملاحظاتك"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter Your Notes"
+          }
+        }
+      }
+    },
     "favourites" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -512,16 +563,25 @@
         }
       }
     },
-    "Go to Cart" : {
-      "extractionState" : "stale",
+    "goToCart" : {
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "اذهب للسلة"
           }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go To Cart"
+          }
         }
       }
+    },
+    "Hello, World!" : {
+
     },
     "home" : {
       "extractionState" : "manual",
@@ -541,7 +601,7 @@
       }
     },
     "Home Screen" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -758,6 +818,23 @@
         }
       }
     },
+    "notes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملاحظات"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
+          }
+        }
+      }
+    },
     "notifications" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -850,7 +927,7 @@
       }
     },
     "Quantity" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -922,6 +999,40 @@
         }
       }
     },
+    "search" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بحث"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        }
+      }
+    },
+    "searchForItem" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ابحث عن صنف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search For Item"
+          }
+        }
+      }
+    },
     "send" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -986,6 +1097,28 @@
     },
     "إجمالي الطلب:" : {
 
+    },
+    "الأسعار" : {
+
+    },
+    "التصنيفات الرئيسية" : {
+
+    },
+    "التصنيفات الفرعية" : {
+
+    },
+    "الشركات" : {
+
+    },
+    "من: %.0f إلى: %.0f جنيه" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "من: %1$.0f إلى: %2$.0f جنيه"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

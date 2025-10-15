@@ -62,7 +62,7 @@ struct CachedAsyncImageView: View {
             } else {
                 Image(placeholder)
                     .resizable()
-//                    .scaledToFit()
+////                    .scaledToFit()
             }
         }
 //        .frame(width: 120, height: 120)
@@ -90,32 +90,32 @@ struct AsyncImageView: View {
             case .empty:
                 // الحالة لحد ما الصورة تحمل
                 ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                    .progressViewStyle(CircularProgressViewStyle(tint: .accent))
                     .scaleEffect(1.5)
                 
             case .success(let image):
                 // الصورة اتحملت بنجاح
                 image
                     .resizable()
-                    .scaledToFill()
+//                    .scaledToFill()
                     .transition(.opacity) // تأثير بسيط
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+//                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 
             case .failure(_):
                 // لو فيه Error نعرض الصورة الافتراضية
                 Image(placeholderImage)
                     .resizable()
-                    .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+//                    .scaledToFit()
+//                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 
             @unknown default:
                 EmptyView()
             }
         }
-        .frame(width: 120, height: 120) // حجم ثابت
-        .background(Color.gray.opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(radius: 3)
+//        .frame(width: 120, height: 120) // حجم ثابت
+//        .background(Color.gray.opacity(0.1))
+//        .clipShape(RoundedRectangle(cornerRadius: 12))
+//        .shadow(radius: 3)
     }
 }
 

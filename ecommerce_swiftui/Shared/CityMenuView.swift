@@ -34,3 +34,31 @@ struct CityMenuView: View {
         }
     }
 }
+
+struct UnitsMenuView: View {
+    var unitsList: [UnitsModel]
+    @Binding var selectedUnit: UnitsModel
+    
+    var body: some View {
+        Menu {
+            ForEach(unitsList) { unit in
+                Button {
+                    selectedUnit = unit
+                } label: {
+                    Text(unit.unit_name ?? "")
+                        .font(.jfFont(size: 18))
+                }
+            }
+        } label: {
+            HStack {
+                Text(selectedUnit.unit_name ?? "chooseUnit".tr())
+                    .font(.jfFont(size: 18))
+                    .foregroundColor(.black)
+                
+                Spacer()
+                Image(systemName: "chevron.down")
+                    .foregroundColor(.gray)
+            }
+        }
+    }
+}
