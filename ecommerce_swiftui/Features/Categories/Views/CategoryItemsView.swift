@@ -13,6 +13,8 @@ struct CategoryItemsView: View {
     @StateObject private var viewModel = CategoriesViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
 
+    @State var selectedCat: CategoriesModel?
+
     var columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -46,11 +48,52 @@ struct CategoryItemsView: View {
                     }
                 }
                 
+                SegmentedPicker(
+                    selection: $selectedCat,
+                    items: $viewModel.categoriesList,
+                    selectionColor: .accent
+                ) { item in
+                    ImageTextView(
+                        image: item.image ?? "",
+                        name: item.name ?? "",
+                        addFrame: true
+                    )
+                }
+                
+//                SegmentedPicker(
+//                    selection: $selectedCat,
+//                    items: $viewModel.categoriesList,
+//                    selectionColor: .accent
+//                ) { item in
+//                    Text(item.name ?? "")
+//                        .font(.jfFont(size: 18))
+////                            .onTapGesture {
+////                                viewModel.selectedCategoryId = item.id ?? 0
+////                                viewModel.selectedCompanyId = 0
+////                                viewModel.fetchSubCategories()
+////                                viewModel.fetchCategoryItems(page: 1)
+////                            }
+//                }
+                
                 if viewModel.subCategoriesList.isEmpty == false {
                     Text("التصنيفات الفرعية")
                         .font(.jfFontBold(size: 18))
                         .padding(.top, 16)
-
+                    
+                    SegmentedPicker(
+                        selection: $selectedCat,
+                        items: $viewModel.subCategoriesList,
+                        selectionColor: .accent
+                    ) { item in
+                        Text(item.name ?? "")
+                            .font(.jfFont(size: 18))
+                            .onTapGesture {
+                                viewModel.selectedCategoryId = item.id ?? 0
+                                viewModel.selectedCompanyId = 0
+                                viewModel.fetchCategoryItems(page: 1)
+                            }
+                    }
+                    
                     ScrollView(.horizontal) {
                         HStack{
                             ForEach(viewModel.subCategoriesList) { item in

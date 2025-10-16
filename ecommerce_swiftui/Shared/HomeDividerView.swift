@@ -26,7 +26,7 @@ struct HomeDividerView: View {
                 }
                 .background(Color(AppColors.white))
                 .foregroundColor(.black)
-                .cornerRadius(24)
+                .clipShape(Capsule())
                 .shadow(radius: 0.3)
             }
             
@@ -38,7 +38,7 @@ struct HomeDividerView: View {
                     .padding(16)
                     .background(Color(AppColors.darkPrimary))
                     .foregroundColor(.white)
-                    .cornerRadius(24)
+                    .clipShape(Capsule())
                 
                 Spacer()
             }

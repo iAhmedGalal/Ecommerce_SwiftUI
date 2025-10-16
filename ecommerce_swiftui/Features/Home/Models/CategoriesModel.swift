@@ -5,7 +5,7 @@
 //  Created by Ahmed Galal on 13/09/2025.
 //
 
-struct CategoriesModel: Codable, Identifiable {
+struct CategoriesModel: Codable, Identifiable, Hashable {
     var id : Int?
     var name : String?
     var image : String?
